@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Insightful Eight Ltd | v1.0.1</title>
- 
     <!-- PWA Meta (for install on phones – no look change) -->
     <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -371,7 +370,7 @@
     </script>
     <script>
         // Real App Script (demo logic + API calls – fallback to demo data)
-        const API_BASE = 'https://i8-backend.onrender.com/api'; // Updated with your Render URL
+        const API_BASE = '/api'; // Updated to relative path for Vercel
         let userToken = localStorage.getItem('token') || '';
         const App = {
             data: { // Fallback demo data for offline
