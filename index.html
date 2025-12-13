@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Insightful Eight Ltd | v6.0</title>
-    
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Insightful Eight">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: { 
-                        brand: { 500: '#6366f1', 600: '#4f46e5', 900: '#312e81' }, 
+                    colors: {
+                        brand: { 500: '#6366f1', 600: '#4f46e5', 900: '#312e81' },
                         dark: { 950: '#020617', 900: '#0f172a', 800: '#1e293b' }
                     },
-                    animation: { 
+                    animation: {
                         'fade-in': 'fadeIn 0.4s ease-out forwards',
                         'slide-up': 'slideUp 0.3s ease-out forwards',
                     },
-                    keyframes: { 
+                    keyframes: {
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
                         slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
                     }
@@ -32,7 +36,6 @@
             }
         }
     </script>
-
     <style>
         body { background-color: #020617; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
@@ -45,13 +48,11 @@
     </style>
 </head>
 <body class="flex h-screen overflow-hidden select-none bg-dark-950 font-sans">
-
     <div id="splash-screen" class="fixed inset-0 z-[100] bg-dark-950 flex flex-col items-center justify-center transition-opacity duration-700">
         <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-4xl mb-6 shadow-2xl shadow-brand-500/20">i8</div>
         <p class="text-white text-lg font-bold">Insightful Eight Ltd</p>
         <p class="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] mt-2 animate-pulse">Loading System v6.0</p>
     </div>
-
     <div id="screen-auth" class="fixed inset-0 z-[60] bg-dark-950 flex flex-col items-center justify-center p-6 transition-all duration-500">
         <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white font-bold text-2xl mb-6">i8</div>
         <h1 class="text-2xl font-bold text-white mb-2">Member Login</h1>
@@ -62,11 +63,8 @@
             <p class="text-center text-xs text-slate-600 mt-6">Pin: 1234</p>
         </div>
     </div>
-
     <div id="toast-box" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
-
     <div id="portal-member" class="hidden flex w-full h-full transition-all duration-500 transform scale-100 opacity-100 origin-center">
-        
         <aside class="hidden md:flex flex-col w-72 bg-dark-950/50 backdrop-blur-xl border-r border-dark-800 z-20">
             <div class="h-24 flex items-center px-8 border-b border-white/5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-xl mr-3 shadow-lg shadow-brand-500/20">i8</div>
@@ -82,67 +80,66 @@
                 </div>
             </nav>
         </aside>
-
         <main class="flex-1 flex flex-col relative h-full bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
             <header class="md:hidden h-16 flex items-center justify-between px-5 bg-dark-950/80 backdrop-blur border-b border-white/5 sticky top-0 z-30">
                 <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">i8</div><span id="header-title" class="font-bold text-lg text-white">Dashboard</span></div>
                 <button onclick="App.switchContext('admin')" class="ml-auto text-amber-500 text-xs font-bold uppercase border border-amber-500/30 px-3 py-1.5 rounded-lg active:bg-amber-500/10">Admin</button>
             </header>
-
             <div id="member-view-container" class="flex-1 overflow-y-auto hide-scroll p-5 pb-32 md:p-10">
-                
                 <section id="view-dashboard" class="space-y-8 animate-slide-up max-w-6xl mx-auto">
                     <div class="flex justify-between items-end">
-                        <div><h2 class="text-3xl font-bold text-white tracking-tight">Insightful Eight Ltd</h2><p class="text-sm text-slate-400 mt-1">Welcome back, Member.</p></div>
+                        <div><h2 class="text-3xl font-bold text-white tracking-tight">Insightful Eight Ltd</h2><p class="text-sm text-slate-400 mt-1">Welcome back, <span id="welcome-user">Member</span>.</p></div>
                     </div>
-                    
                     <div class="glass p-6 rounded-2xl border-l-4 border-l-brand-500">
                         <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-400"></i> Official Communications</h3><span class="text-[10px] text-slate-500">Verified by Chair</span></div>
                         <div id="member-news-feed" class="space-y-4"></div>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="glass p-6 rounded-2xl"><p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Company Liquidity</p><h3 class="text-3xl font-bold text-white mt-1">KES 1.2M</h3></div>
                         <div class="glass p-6 rounded-2xl cursor-pointer hover:bg-white/5" onclick="App.nav('vote')"><p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Active Polls</p><h3 id="dash-poll-count" class="text-3xl font-bold text-white mt-1">0</h3></div>
                         <div class="glass p-6 rounded-2xl border-l-4 border-l-emerald-500"><p class="text-xs text-slate-400 font-bold uppercase tracking-wider">My Welfare Status</p><h3 class="text-xl font-bold text-white mt-1">Good Standing</h3></div>
                     </div>
                 </section>
-
                 <section id="view-finance" class="hidden space-y-6 animate-slide-up max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold text-white">Finance & Business Loans</h2>
                     <div class="flex gap-2 mb-4">
                         <button onclick="App.uploadSlip()" class="flex-1 bg-white text-dark-950 py-3 rounded-xl font-bold hover:bg-slate-200"><i class="fa-solid fa-receipt mr-2"></i>Record Pay</button>
-                        <button onclick="App.requestLoan()" class="flex-1 bg-dark-800 border border-white/10 text-white py-3 rounded-xl font-bold hover:bg-dark-700"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Apply Loan</button>
+                        <button onclick="App.openLoanModal()" class="flex-1 bg-dark-800 border border-white/10 text-white py-3 rounded-xl font-bold hover:bg-dark-700"><i class="fa-solid fa-money-bill-transfer mr-2"></i>Apply Loan</button>
                     </div>
                     <div class="glass rounded-2xl overflow-hidden border border-white/5">
                         <div class="p-4 bg-white/5 border-b border-white/5"><span class="text-xs font-bold text-slate-300">Transaction Ledger</span></div>
                         <div id="finance-list" class="divide-y divide-white/5"></div>
                     </div>
                 </section>
-
                 <section id="view-welfare" class="hidden space-y-6 animate-slide-up max-w-4xl mx-auto">
                     <div class="flex justify-between items-center">
                         <h2 class="text-2xl font-bold text-white">Welfare Support</h2>
                         <button onclick="App.openWelfareModal()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-pink-500/20"><i class="fa-solid fa-heart-pulse mr-2"></i>Claim Support</button>
                     </div>
-                    
                     <div class="glass p-6 rounded-2xl border border-pink-500/20">
                         <p class="text-sm text-slate-400 mb-6">Welfare is support, not a loan. All claims undergo the 3-Step Verification process.</p>
-                        <div id="welfare-list" class="space-y-4">
-                            </div>
+                        <div id="welfare-list" class="space-y-4"></div>
                     </div>
                 </section>
-
                 <section id="view-vote" class="hidden space-y-6 animate-slide-up max-w-3xl mx-auto">
                     <div class="flex justify-between items-center">
                         <h2 class="text-2xl font-bold text-white">Polls & Elections</h2>
-                        <button onclick="App.downloadResults()" class="hidden id-download-btn text-xs bg-dark-800 border border-white/10 text-white px-3 py-2 rounded-lg hover:bg-dark-700"><i class="fa-solid fa-download mr-1"></i> Report</button>
+                        <button onclick="App.downloadResults()" class="hidden id-download-btn text-xs bg-dark-800 border border-white/10 text-white px-3 py-2 rounded-lg hover:bg-dark-700"><i class="fa-solid fa-download mr-1"></i> Official Results</button>
                     </div>
                     <div id="polls-container" class="space-y-6"></div>
                 </section>
+                <section id="view-profile" class="hidden space-y-6 animate-slide-up max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold text-white">Profile</h2>
+                    <div class="glass p-6 rounded-2xl">
+                        <div class="space-y-4">
+                            <div><label class="text-xs text-slate-400 uppercase font-bold">Full Name</label><input type="text" id="profile-name" value="Felix" class="w-full bg-dark-900 border border-white/10 rounded-xl p-3 text-white mt-1" disabled></div>
+                            <div><label class="text-xs text-slate-400 uppercase font-bold">Email</label><input type="email" id="profile-email" value="felix@example.com" class="w-full bg-dark-900 border border-white/10 rounded-xl p-3 text-white mt-1" disabled></div>
+                            <div><label class="text-xs text-slate-400 uppercase font-bold">Change PIN</label><input type="password" id="new-pin" maxlength="4" class="w-full bg-dark-900 border border-white/10 rounded-xl text-center text-2xl tracking-[1em] text-white p-3 mt-1" placeholder="••••"><button onclick="App.changePin()" class="mt-2 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-bold">Update PIN</button></div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
-
         <div id="modal-welfare" class="hidden absolute inset-0 z-50 bg-dark-950/90 backdrop-blur flex items-center justify-center p-4">
             <div class="glass p-6 rounded-2xl w-full max-w-md animate-slide-up border border-pink-500/30">
                 <h3 class="text-xl font-bold text-white mb-4">New Welfare Claim</h3>
@@ -154,8 +151,18 @@
                 </div>
             </div>
         </div>
+        <div id="modal-loan" class="hidden absolute inset-0 z-50 bg-dark-950/90 backdrop-blur flex items-center justify-center p-4">
+            <div class="glass p-6 rounded-2xl w-full max-w-md animate-slide-up border border-emerald-500/30">
+                <h3 class="text-xl font-bold text-white mb-4">Loan Application</h3>
+                <div class="space-y-4">
+                    <div><label class="text-xs text-slate-400 uppercase font-bold">Amount (KES)</label><input type="number" id="loan-amount" class="w-full bg-dark-900 border border-white/10 rounded-xl p-3 text-white mt-1"></div>
+                    <div><label class="text-xs text-slate-400 uppercase font-bold">Purpose</label><textarea id="loan-purpose" class="w-full bg-dark-900 border border-white/10 rounded-xl p-3 text-white mt-1 h-20"></textarea></div>
+                    <button onclick="App.submitLoan()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-500">Apply</button>
+                    <button onclick="document.getElementById('modal-loan').classList.add('hidden')" class="w-full text-slate-500 text-sm py-2">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
-
     <div id="portal-admin" class="hidden fixed inset-0 z-50 bg-dark-950 flex flex-col transition-all duration-300 transform opacity-0 scale-95">
         <header class="h-16 border-b border-white/5 bg-dark-900 flex items-center justify-between px-6 shadow-2xl">
             <div class="flex items-center gap-3">
@@ -164,9 +171,7 @@
             </div>
             <button onclick="App.adminLogout()" class="text-xs font-bold text-red-400 hover:text-red-300 uppercase border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500/10 transition"><i class="fa-solid fa-power-off mr-1"></i> Secure Exit</button>
         </header>
-
         <main class="flex-1 relative overflow-hidden bg-gradient-to-br from-dark-950 via-[#0f1221] to-dark-950 p-6 md:p-10 overflow-y-auto">
-            
             <div id="admin-screen-login" class="flex flex-col items-center justify-center h-full">
                 <h2 class="text-2xl font-bold text-white mb-8">Select Role</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
@@ -187,13 +192,13 @@
                     </button>
                 </div>
             </div>
-
             <div id="view-admin-Secretary" class="hidden space-y-6 max-w-4xl mx-auto">
                 <div class="bg-blue-900/20 border border-blue-500/30 p-6 rounded-2xl">
                     <h3 class="font-bold text-white mb-4">Create New Poll</h3>
                     <input id="poll-question" type="text" placeholder="Poll Question (e.g. Venue for AGM?)" class="w-full bg-dark-950 border border-white/10 rounded-xl p-3 text-white mb-3">
                     <input id="poll-opts" type="text" placeholder="Options (comma separated: Naivasha, Nakuru)" class="w-full bg-dark-950 border border-white/10 rounded-xl p-3 text-white mb-3">
-                    <button onclick="App.createPoll()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-500">Launch Poll</button>
+                    <button onclick="App.createPoll()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-500 mr-2">Launch Poll</button>
+                    <button onclick="App.closePoll()" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-red-500">Close Poll</button>
                 </div>
                 <div class="glass p-6 rounded-2xl">
                     <h3 class="font-bold text-white mb-4">Welfare: Recording Stage</h3>
@@ -204,359 +209,460 @@
                     <textarea id="sec-news" class="w-full bg-dark-950 border border-white/10 rounded-xl p-3 text-white h-24 mb-2" placeholder="Write message..."></textarea>
                     <button onclick="App.submitNews()" class="bg-white text-dark-950 font-bold px-4 py-2 rounded-lg text-xs">Submit to Chair</button>
                 </div>
+                <div class="glass p-6 rounded-2xl mt-8">
+                    <h3 class="font-bold text-white mb-4 text-red-400"><i class="fa-solid fa-user-gear mr-2"></i>Handover/Takeover (Secretary)</h3>
+                    <div class="flex gap-4">
+                        <input type="text" id="handover-name-sec" placeholder="New Secretary Name" class="flex-1 bg-dark-950 border border-white/10 rounded-xl p-3 text-white">
+                        <select id="handover-sig-sec" class="bg-dark-950 border border-white/10 rounded-xl p-3 text-white"><option value="">Select Signature</option></select>
+                        <button onclick="App.executeHandover('sec')" class="bg-red-500/20 text-red-400 border border-red-500/30 px-4 rounded-xl font-bold text-xs hover:bg-red-500 hover:text-white transition">Execute</button>
+                    </div>
+                </div>
             </div>
-
             <div id="view-admin-Treasurer" class="hidden space-y-6 max-w-4xl mx-auto">
                 <div class="glass p-6 rounded-2xl border-l-4 border-emerald-500">
                     <h3 class="font-bold text-white mb-4">Welfare: Funding Allocation</h3>
                     <div id="treas-welfare-queue" class="space-y-2"></div>
                 </div>
-                 <div class="glass p-6 rounded-2xl">
+                <div class="glass p-6 rounded-2xl">
                     <h3 class="font-bold text-white mb-4">Transaction Approvals (Loans/Deposits)</h3>
                     <p class="text-sm text-slate-500 italic">No pending financial transactions.</p>
                 </div>
+                <div class="bg-emerald-900/20 border border-emerald-500/30 p-6 rounded-2xl mt-8">
+                    <h3 class="font-bold text-white mb-4 text-red-400"><i class="fa-solid fa-user-gear mr-2"></i>Handover/Takeover (Treasurer)</h3>
+                    <div class="flex gap-4">
+                        <input type="text" id="handover-name-treas" placeholder="New Treasurer Name" class="flex-1 bg-dark-950 border border-white/10 rounded-xl p-3 text-white">
+                        <select id="handover-sig-treas" class="bg-dark-950 border border-white/10 rounded-xl p-3 text-white"><option value="">Select Signature</option></select>
+                        <button onclick="App.executeHandover('treas')" class="bg-red-500/20 text-red-400 border border-red-500/30 px-4 rounded-xl font-bold text-xs hover:bg-red-500 hover:text-white transition">Execute</button>
+                    </div>
+                </div>
             </div>
-
             <div id="view-admin-Chairperson" class="hidden space-y-6 max-w-4xl mx-auto">
                 <div class="bg-purple-900/20 border border-purple-500/30 p-6 rounded-2xl relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-purple-500/10 text-9xl"><i class="fa-solid fa-stamp"></i></div>
                     <h3 class="font-bold text-white text-xl mb-1">The Chairman's Gate</h3>
                     <p class="text-sm text-purple-300 mb-6">Review, Authenticate & Sign off on pending items.</p>
-                    
                     <div id="chair-queue" class="space-y-3 relative z-10"></div>
                 </div>
-
+                <div class="glass p-6 rounded-2xl">
+                    <h3 class="font-bold text-white mb-4">Direct Communication</h3>
+                    <textarea id="chair-comm" class="w-full bg-dark-950 border border-white/10 rounded-xl p-3 text-white h-24 mb-2" placeholder="Direct announcement to all members..."></textarea>
+                    <button onclick="App.publishDirectComm()" class="bg-purple-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-purple-500">Publish Now</button>
+                </div>
                 <div class="glass p-6 rounded-2xl mt-8">
-                    <h3 class="font-bold text-white mb-4 text-red-400"><i class="fa-solid fa-user-gear mr-2"></i>Executive Transition</h3>
+                    <h3 class="font-bold text-white mb-4 text-red-400"><i class="fa-solid fa-user-gear mr-2"></i>Handover/Takeover (Chairperson)</h3>
                     <div class="flex gap-4">
-                        <select id="handover-role" class="bg-dark-950 border border-white/10 rounded-xl p-3 text-white"><option>Secretary</option><option>Treasurer</option></select>
-                        <input type="text" placeholder="New Officer Name" class="flex-1 bg-dark-950 border border-white/10 rounded-xl p-3 text-white">
-                        <button onclick="App.toast('Transition Protocol Initiated. New Admin notified.', 'info')" class="bg-red-500/20 text-red-400 border border-red-500/30 px-4 rounded-xl font-bold text-xs hover:bg-red-500 hover:text-white transition">Execute Replacement</button>
+                        <input type="text" id="handover-name-chair" placeholder="New Chairperson Name" class="flex-1 bg-dark-950 border border-white/10 rounded-xl p-3 text-white">
+                        <select id="handover-sig-chair" class="bg-dark-950 border border-white/10 rounded-xl p-3 text-white"><option value="">Select Signature</option></select>
+                        <button onclick="App.executeHandover('chair')" class="bg-red-500/20 text-red-400 border border-red-500/30 px-4 rounded-xl font-bold text-xs hover:bg-red-500 hover:text-white transition">Execute</button>
                     </div>
                 </div>
+                <div class="glass p-6 rounded-2xl mt-8">
+                    <h3 class="font-bold text-white mb-4"><i class="fa-solid fa-chart-pie mr-2 text-purple-400"></i>Analytics Overview</h3>
+                    <div class="h-64"><canvas id="analytics-chart"></canvas></div>
+                </div>
             </div>
-
         </main>
     </div>
-
     <div id="modal-pin" class="hidden absolute inset-0 z-[70] bg-dark-950/90 backdrop-blur flex items-center justify-center"><div class="glass p-8 rounded-2xl w-full max-w-xs text-center"><h3 id="pin-title" class="text-xl font-bold text-white mb-2">Enter PIN</h3><input type="password" id="pin-input" maxlength="4" class="bg-dark-900 border border-white/10 rounded-xl text-center text-2xl tracking-[1em] text-white p-3 w-full outline-none focus:border-brand-500 transition mb-4"><button onclick="App.verifyPin()" class="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-500">Unlock Console</button><button onclick="document.getElementById('modal-pin').classList.add('hidden')" class="mt-4 text-xs text-slate-500 hover:text-white">Cancel</button></div></div>
-
     <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {}); // PWA ready
+            });
+        }
+    </script>
+    <script>
+        // Full Working App Script (Demo + Backend Fallback)
+        const API_BASE = '/api'; // Backend endpoint
+        let userToken = localStorage.getItem('token') || '';
         const App = {
-            data: {
-                user: 'Felix',
+            data: { // Local demo data (persists via localStorage)
+                user: localStorage.getItem('i8-user') || 'Felix',
                 role: null,
-                news: [],
-                polls: [
-                    { id: 1, q: 'End of Year Party Venue?', opts: ['Naivasha', 'Mombasa', 'Eldoret'], votes: [2, 5, 1], voters: [], active: true }
-                ],
-                welfare: [], // { id, type, amount, status: 'Sec'|'Treas'|'Chair'|'Paid', member: 'John' }
-                chairQueue: [], // { id, type: 'News'|'Welfare'|'Finance', data, author }
-                transactions: [
-                    { t: 'Monthly Contribution', d: 'Dec 01', a: 5000, type: 'in' },
-                    { t: 'Welfare Payout #003', d: 'Nov 15', a: 10000, type: 'out' }
-                ]
+                news: JSON.parse(localStorage.getItem('i8-news') || '[]'),
+                polls: JSON.parse(localStorage.getItem('i8-polls') || JSON.stringify([{ id: 1, q: 'End of Year Party Venue?', opts: ['Naivasha', 'Mombasa', 'Eldoret'], votes: [2, 5, 1], voters: [], active: true }])),
+                approvedReports: JSON.parse(localStorage.getItem('i8-reports') || '[]'),
+                welfare: JSON.parse(localStorage.getItem('i8-welfare') || '[]'),
+                chairQueue: JSON.parse(localStorage.getItem('i8-chairQueue') || '[]'),
+                transactions: JSON.parse(localStorage.getItem('i8-transactions') || JSON.stringify([{ Title: 'Monthly Contribution', Date: 'Dec 01', Amount: 5000, Type: 'in', Member: 'Felix' }, { Title: 'Welfare Payout #003', Date: 'Nov 15', Amount: 10000, Type: 'out', Member: 'Felix' }])),
+                logs: JSON.parse(localStorage.getItem('i8-logs') || '[]'),
+                members: JSON.parse(localStorage.getItem('i8-members') || JSON.stringify([{name: 'Felix', email: 'felix@example.com', pin: '1234'}, {name: 'John', email: 'john@example.com', pin: '0000'}])),
+                signatures: JSON.parse(localStorage.getItem('i8-signatures') || JSON.stringify({ Secretary: 'Current Secretary', Treasurer: 'Current Treasurer', Chairperson: 'Current Chairperson' })),
+                notifications: JSON.parse(localStorage.getItem('i8-notifications') || '[]'),
+                loans: JSON.parse(localStorage.getItem('i8-loans') || '[]')
             },
-
-            // --- AUTH & NAV ---
-            memberLogin: () => {
-                if(document.getElementById('member-pin').value === '1234') {
-                    document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
-                    document.getElementById('portal-member').classList.remove('hidden');
-                    App.renderAll();
-                } else alert('Wrong PIN');
+            saveData() {
+                Object.keys(App.data).forEach(key => localStorage.setItem(`i8-${key}`, JSON.stringify(App.data[key])));
             },
-
-            nav: (view) => {
+            // Backend Fetch Helper (with fallback)
+            async apiCall(endpoint, options = {}) {
+                try {
+                    const res = await fetch(`${API_BASE}${endpoint}`, {
+                        ...options,
+                        headers: { ...options.headers, 'Authorization': `Bearer ${userToken}` }
+                    });
+                    if (res.ok) return await res.json();
+                } catch (err) {
+                    console.warn('Backend offline, using demo data');
+                }
+                return null; // Fallback to local
+            },
+            // Auth & Nav
+            async memberLogin() {
+                const pin = document.getElementById('member-pin').value;
+                // Try backend
+                const data = await App.apiCall('/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+                if (data && data.user) {
+                    App.data.user = data.user.name;
+                    userToken = data.token;
+                    localStorage.setItem('token', userToken);
+                } else if (pin === '1234') {
+                    App.data.user = 'Felix'; // Demo fallback
+                } else {
+                    App.toast('Invalid PIN', 'error');
+                    return;
+                }
+                App.saveData();
+                document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => document.getElementById('screen-auth').style.display = 'none', 500);
+                document.getElementById('portal-member').classList.remove('hidden');
+                document.getElementById('welcome-user').innerText = App.data.user;
+                await App.renderAll();
+                App.renderNotifications();
+                App.toast(`Welcome back, ${App.data.user}!`, 'success');
+            },
+            nav(view) {
                 document.querySelectorAll('#member-view-container section').forEach(el => el.classList.add('hidden'));
                 const target = document.getElementById(`view-${view}`);
-                target.classList.remove('hidden'); 
-                target.classList.remove('animate-slide-up'); 
-                void target.offsetWidth; 
+                target.classList.remove('hidden');
+                target.classList.remove('animate-slide-up');
+                void target.offsetWidth;
                 target.classList.add('animate-slide-up');
-                
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 document.getElementById(`nav-${view}`).classList.add('active');
+                document.getElementById('header-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
+                if (view === 'dashboard') App.renderDashboard();
+                if (view === 'finance') App.renderFinance();
+                if (view === 'welfare') App.renderWelfare();
+                if (view === 'vote') App.renderPolls();
+                if (view === 'profile') App.renderProfile();
             },
-
-            switchContext: (ctx) => {
-                const admin = document.getElementById('portal-admin');
-                const member = document.getElementById('portal-member');
-                if(ctx === 'admin') {
-                    member.classList.add('hidden');
-                    admin.classList.remove('hidden');
-                    setTimeout(() => { admin.classList.remove('opacity-0', 'scale-95'); }, 50);
-                } else {
-                    App.adminLogout();
+            switchContext(ctx) {
+                if (ctx === 'admin') {
+                    document.getElementById('portal-member').classList.add('hidden');
+                    document.getElementById('portal-admin').classList.remove('hidden');
+                    setTimeout(() => document.getElementById('portal-admin').classList.remove('opacity-0', 'scale-95'), 50);
                 }
             },
-
-            // --- MEMBER FEATURES ---
-            renderAll: () => {
-                App.renderNews();
-                App.renderFinance();
-                App.renderWelfareMember();
-                App.renderPolls();
+            // Member Features
+            async renderAll() {
+                await Promise.all([
+                    App.renderNews(),
+                    App.renderFinance(),
+                    App.renderWelfare(),
+                    App.renderPolls(),
+                    App.renderProfile(),
+                    App.renderDashboard()
+                ]);
             },
-
-            renderNews: () => {
+            async renderNews() {
+                let news = await App.apiCall('/news');
+                if (!news) news = App.data.news;
                 const el = document.getElementById('member-news-feed');
-                el.innerHTML = App.data.news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
-                App.data.news.forEach(n => {
+                el.innerHTML = news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
+                news.forEach(n => {
                     el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
                 });
+                App.data.news = news;
+                App.saveData();
             },
-
-            renderFinance: () => {
-                const list = document.getElementById('finance-list'); list.innerHTML = '';
-                App.data.transactions.forEach(t => {
-                    list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
-                });
+            async renderFinance() {
+                let transactions = await App.apiCall('/transactions?member=' + App.data.user);
+                if (!transactions) transactions = App.data.transactions;
+                const el = document.getElementById('finance-list');
+                el.innerHTML = transactions.map(t => `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.Title}</span><span class="font-mono font-bold ${t.Type==='in'?'text-emerald-400':'text-amber-400'}">${t.Type==='in'?'+':'-'} KES ${t.Amount}</span><p class="text-xs text-slate-500">${t.Date}</p></div>`).join('') || '<p class="text-slate-500 text-sm italic">No transactions.</p>';
+                App.data.transactions = transactions;
+                App.saveData();
             },
-
-            // --- WELFARE SYSTEM (3-TIER) ---
-            openWelfareModal: () => document.getElementById('modal-welfare').classList.remove('hidden'),
-            
-            submitWelfare: () => {
-                const type = document.getElementById('welfare-type').value;
-                const amt = document.getElementById('welfare-amount').value;
-                if(!amt) return;
-                
-                // Add to Welfare array with Step 1
-                App.data.welfare.push({ id: Date.now(), type, amount: amt, member: 'Me', status: 'Sec', date: new Date().toLocaleDateString() });
-                
-                document.getElementById('modal-welfare').classList.add('hidden');
-                App.toast('Claim Sent to Secretary for Recording', 'success');
-                App.renderWelfareMember();
+            async renderWelfare() {
+                let welfare = await App.apiCall('/welfare?member=' + App.data.user);
+                if (!welfare) welfare = App.data.welfare;
+                const list = document.getElementById('welfare-list');
+                list.innerHTML = welfare.map(w => {
+                    const s1 = w.Status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
+                    const s2 = w.Status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.Status === 'Chair' || w.Status === 'Paid' ? 'text-emerald-500' : 'text-slate-700');
+                    const s3 = w.Status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.Status === 'Paid' ? 'text-emerald-500' : 'text-slate-700');
+                    return `
+                        <div class="bg-dark-900 p-4 rounded-xl border border-white/5">
+                            <div class="flex justify-between mb-3"><span class="font-bold text-white text-sm">${w.Type}</span><span class="font-mono text-pink-400 text-sm">KES ${w.Amount}</span></div>
+                            <div class="flex items-center justify-between text-xs px-2">
+                                <div class="text-center ${s1}"><i class="fa-solid fa-file-pen"></i><p class="scale-75">Recorded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s2}"><i class="fa-solid fa-coins"></i><p class="scale-75">Funded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s3}"><i class="fa-solid fa-stamp"></i><p class="scale-75">Released</p></div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2 text-center">Claimed on ${w.Date}</p>
+                        </div>`;
+                }).join('') || '<p class="text-slate-500 text-sm italic">No claims history.</p>';
+                App.data.welfare = welfare;
+                App.saveData();
             },
-
-            renderWelfareMember: () => {
-                const list = document.getElementById('welfare-list'); list.innerHTML = '';
-                if(App.data.welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
-                
-                App.data.welfare.forEach(w => {
-                    // Logic for visual stepper
-                    const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
-                    const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
-                    const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
-
-                    list.innerHTML += `
-                    <div class="bg-dark-900 p-4 rounded-xl border border-white/5">
-                        <div class="flex justify-between mb-3"><span class="font-bold text-white text-sm">${w.type}</span><span class="font-mono text-pink-400 text-sm">KES ${w.amount}</span></div>
-                        <div class="flex items-center justify-between text-xs px-2">
-                            <div class="text-center ${s1}"><i class="fa-solid fa-file-pen"></i><p class="scale-75">Recorded</p></div>
-                            <div class="h-0.5 w-8 bg-white/10"></div>
-                            <div class="text-center ${s2}"><i class="fa-solid fa-coins"></i><p class="scale-75">Funded</p></div>
-                            <div class="h-0.5 w-8 bg-white/10"></div>
-                            <div class="text-center ${s3}"><i class="fa-solid fa-stamp"></i><p class="scale-75">Released</p></div>
-                        </div>
-                    </div>`;
-                });
-            },
-
-            // --- POLLING (Live Result Logic) ---
-            renderPolls: () => {
-                const con = document.getElementById('polls-container'); con.innerHTML = '';
-                document.getElementById('dash-poll-count').innerText = App.data.polls.length;
-
-                App.data.polls.forEach((p, idx) => {
+            async renderPolls() {
+                let polls = await App.apiCall('/polls');
+                if (!polls) polls = App.data.polls;
+                const container = document.getElementById('polls-container');
+                container.innerHTML = polls.filter(p => p.active).map(p => {
                     const hasVoted = p.voters.includes(App.data.user);
                     let content = '';
-
-                    if(!hasVoted) {
-                        // Show Voting Form
-                        let optsHtml = '';
-                        p.opts.forEach((o, i) => {
-                            optsHtml += `<label class="flex items-center gap-3 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 border border-transparent hover:border-brand-500 transition"><input type="radio" name="poll_${p.id}" value="${i}" class="accent-brand-500"><span class="text-sm text-slate-300">${o}</span></label>`;
-                        });
-                        content = `<h3 class="font-bold text-white mb-3">${p.q}</h3><div class="space-y-2">${optsHtml}</div><button onclick="App.castVote(${idx})" class="mt-4 w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded-lg text-sm">Vote to View Results</button>`;
+                    if (!hasVoted) {
+                        let optsHtml = p.opts.map((opt, i) => `<label class="flex items-center gap-3 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 border border-transparent hover:border-brand-500 transition"><input type="radio" name="poll_${p.id}" value="${i}" class="accent-brand-500"><span class="text-sm text-slate-300">${opt}</span></label>`).join('');
+                        content = `<h3 class="font-bold text-white mb-3">${p.q}</h3><div class="space-y-2">${optsHtml}</div><button onclick="App.castVote(${p.id})" class="mt-4 w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded-lg text-sm">Vote</button>`;
                     } else {
-                        // Show Chart
-                        const total = p.votes.reduce((a,b)=>a+b, 0);
-                        content = `<div class="flex justify-between mb-2"><h3 class="font-bold text-white">${p.q}</h3><span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded">Voted <i class="fa-solid fa-check ml-1"></i></span></div><div class="h-48"><canvas id="chart_${p.id}"></canvas></div><p class="text-center text-xs text-slate-500 mt-2">Total Votes: ${total} | Live Results</p>`;
-                        setTimeout(() => App.drawChart(p), 100);
-                        document.querySelector('.id-download-btn').classList.remove('hidden');
+                        content = `<h3 class="font-bold text-white mb-3">${p.q}</h3><canvas id="chart_${p.id}" class="h-48 w-full"></canvas><p class="text-center text-xs text-slate-500 mt-2">Total Votes: ${p.votes.reduce((a,b) => a+b, 0)}</p>`;
+                        setTimeout(() => new Chart(document.getElementById(`chart_${p.id}`), {
+                            type: 'bar',
+                            data: { labels: p.opts, datasets: [{ label: '# Votes', data: p.votes, backgroundColor: '#6366f1', borderRadius: 4 }] },
+                            options: { plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                        }), 100);
+                        document.getElementById('id-download-btn').classList.remove('hidden');
                     }
-
-                    con.innerHTML += `<div class="glass p-6 rounded-2xl id-poll-card">${content}</div>`;
-                });
+                    return `<div class="glass p-6 rounded-2xl">${content}</div>`;
+                }).join('') || '<p class="text-slate-500">No active polls.</p>';
+                document.getElementById('dash-poll-count').innerText = polls.filter(p => p.active).length;
+                App.data.polls = polls;
+                App.saveData();
             },
-
-            castVote: (idx) => {
-                // Find selected option
-                const radios = document.getElementsByName(`poll_${App.data.polls[idx].id}`);
+            castVote(pollId) {
+                const radios = document.getElementsByName(`poll_${pollId}`);
                 let val = -1;
-                for(let r of radios) if(r.checked) val = parseInt(r.value);
-                
-                if(val === -1) return alert('Select an option');
-
-                App.data.polls[idx].votes[val]++;
-                App.data.polls[idx].voters.push(App.data.user);
-                App.toast('Vote Cast Successfully', 'success');
+                for (let r of radios) if (r.checked) val = parseInt(r.value);
+                if (val === -1) return App.toast('Select an option', 'error');
+                const poll = App.data.polls.find(p => p.id === pollId);
+                poll.votes[val]++;
+                poll.voters.push(App.data.user);
+                App.saveData();
+                App.toast('Vote Cast!', 'success');
                 App.renderPolls();
             },
-
-            drawChart: (p) => {
-                new Chart(document.getElementById(`chart_${p.id}`), {
-                    type: 'bar',
-                    data: { labels: p.opts, datasets: [{ label: '# Votes', data: p.votes, backgroundColor: '#6366f1', borderRadius: 4 }] },
-                    options: { plugins: { legend: {display:false} }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-                });
-            },
-
-            downloadResults: () => {
+            downloadResults() {
                 const el = document.getElementById('view-vote');
-                html2pdf().from(el).save('i8_Election_Results.pdf');
-                App.toast('Downloading PDF...', 'success');
+                html2pdf().from(el).save('i8_Poll_Results.pdf');
+                App.toast('PDF Downloaded', 'success');
             },
-
-            // --- ADMIN LOGIC ---
-            adminLogin: (role) => {
+            renderProfile() {
+                const user = App.data.members.find(m => m.name === App.data.user) || { name: App.data.user, email: 'demo@example.com' };
+                document.getElementById('profile-name').value = user.name;
+                document.getElementById('profile-email').value = user.email;
+            },
+            changePin() {
+                const newPin = document.getElementById('new-pin').value;
+                if (newPin.length === 4) {
+                    const user = App.data.members.find(m => m.name === App.data.user);
+                    if (user) user.pin = newPin;
+                    App.saveData();
+                    App.toast('PIN Updated', 'success');
+                    document.getElementById('new-pin').value = '';
+                } else App.toast('PIN must be 4 digits', 'error');
+            },
+            uploadSlip() {
+                // Demo upload
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = 'image/*';
+                fileInput.onchange = (e) => {
+                    if (e.target.files[0]) {
+                        App.data.transactions.unshift({ Title: 'Deposit Slip Upload', Date: new Date().toLocaleDateString(), Amount: 5000, Type: 'in', Member: App.data.user });
+                        App.saveData();
+                        App.renderFinance();
+                        App.toast('Payment Recorded', 'success');
+                    }
+                };
+                fileInput.click();
+            },
+            openLoanModal() {
+                document.getElementById('modal-loan').classList.remove('hidden');
+            },
+            submitLoan() {
+                const amt = document.getElementById('loan-amount').value;
+                const purpose = document.getElementById('loan-purpose').value;
+                if (amt && purpose) {
+                    App.data.loans.push({ Amount: amt, Purpose: purpose, Member: App.data.user, Status: 'Pending', Date: new Date().toLocaleDateString() });
+                    App.saveData();
+                    document.getElementById('modal-loan').classList.add('hidden');
+                    document.getElementById('loan-amount').value = '';
+                    document.getElementById('loan-purpose').value = '';
+                    App.toast('Loan Submitted', 'success');
+                } else App.toast('Fill all fields', 'error');
+            },
+            openWelfareModal() {
+                document.getElementById('modal-welfare').classList.remove('hidden');
+            },
+            submitWelfare() {
+                const type = document.getElementById('welfare-type').value;
+                const amt = document.getElementById('welfare-amount').value;
+                if (amt) {
+                    // Try backend
+                    const res = await App.apiCall('/welfare', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type, amount: parseInt(amt), member: App.data.user })
+                    });
+                    if (!res) {
+                        App.data.welfare.push({ Type: type, Amount: parseInt(amt), Member: App.data.user, Status: 'Sec', Date: new Date().toLocaleDateString() });
+                    }
+                    App.saveData();
+                    document.getElementById('modal-welfare').classList.add('hidden');
+                    document.getElementById('welfare-amount').value = '';
+                    App.toast('Claim Submitted to Secretary', 'success');
+                    App.renderWelfare();
+                } else App.toast('Enter amount', 'error');
+            },
+            renderDashboard() {
+                document.getElementById('dash-poll-count').innerText = App.data.polls.filter(p => p.active).length;
+            },
+            // Admin
+            adminLogin(role) {
                 App.data.role = role;
                 document.getElementById('pin-title').innerText = `${role} Access`;
                 document.getElementById('modal-pin').classList.remove('hidden');
-                document.getElementById('pin-input').value = '';
                 document.getElementById('pin-input').focus();
             },
-
-            verifyPin: () => {
-                if(document.getElementById('pin-input').value === '1234') {
+            verifyPin() {
+                if (document.getElementById('pin-input').value === '1234') {
                     document.getElementById('modal-pin').classList.add('hidden');
                     document.getElementById('admin-screen-login').classList.add('hidden');
-                    
-                    const role = App.data.role;
-                    document.getElementById(`view-admin-${role}`).classList.remove('hidden');
+                    const viewId = `view-admin-${role.toLowerCase()}`;
+                    document.getElementById(viewId).classList.remove('hidden');
                     document.getElementById('admin-badge').innerText = role;
-
-                    // Load Data specific to role
-                    if(role === 'Secretary') App.renderSecView();
-                    if(role === 'Treasurer') App.renderTreasView();
-                    if(role === 'Chairperson') App.renderChairView();
-
-                } else alert('Invalid PIN');
+                    document.getElementById('admin-badge').className = 'text-[10px] bg-green-500/20 px-2 py-0.5 rounded text-green-400 ml-2 uppercase';
+                    App.renderAdmin(role);
+                } else App.toast('Invalid Admin PIN', 'error');
             },
-
-            adminLogout: () => {
-                // DESTROY SESSION simulation
+            adminLogout() {
                 document.getElementById('portal-admin').classList.add('opacity-0', 'scale-95');
                 setTimeout(() => {
                     document.getElementById('portal-admin').classList.add('hidden');
-                    // Reset Admin Views
                     document.getElementById('admin-screen-login').classList.remove('hidden');
                     document.querySelectorAll('[id^="view-admin-"]').forEach(el => el.classList.add('hidden'));
-                    document.getElementById('member-pin').value = '';
                     App.data.role = null;
                 }, 300);
-                // Back to Member
                 document.getElementById('portal-member').classList.remove('hidden');
             },
-
-            // --- ROLE WORKFLOWS ---
-            
-            // SECRETARY
-            createPoll: () => {
+            renderAdmin(role) {
+                if (role === 'Secretary') {
+                    // Welfare queue for recording
+                    const queue = App.data.welfare.filter(w => w.Status === 'Pending');
+                    document.getElementById('sec-welfare-queue').innerHTML = queue.length ? queue.map(w => `<div class="bg-dark-900 p-3 rounded-lg border border-white/10 flex justify-between"><span>${w.Member}: ${w.Type} (KES ${w.Amount})</span><button onclick="App.recordWelfare('${w.id}')" class="bg-blue-600 text-xs px-3 py-1 rounded text-white">Record</button></div>`).join('') : '<p class="text-slate-500">No pending.</p>';
+                } else if (role === 'Treasurer') {
+                    const queue = App.data.welfare.filter(w => w.Status === 'Sec');
+                    document.getElementById('treas-welfare-queue').innerHTML = queue.length ? queue.map(w => `<div class="bg-dark-900 p-3 rounded-lg border border-white/10 flex justify-between"><span>${w.Member}: ${w.Type} (KES ${w.Amount})</span><button onclick="App.fundWelfare('${w.id}')" class="bg-emerald-600 text-xs px-3 py-1 rounded text-white">Fund</button></div>`).join('') : '<p class="text-slate-500">No pending.</p>';
+                } else if (role === 'Chairperson') {
+                    document.getElementById('chair-queue').innerHTML = App.data.chairQueue.length ? App.data.chairQueue.map((item, idx) => `<div class="bg-dark-900 p-4 rounded-xl border-l-4 border-purple-500"><p class="text-white text-sm">${item.type}: ${item.data}</p><button onclick="App.approveItem(${idx})" class="w-full bg-purple-600 text-white py-2 rounded">Approve</button></div>`).join('') : '<p class="text-slate-500">No pending.</p>';
+                    new Chart(document.getElementById('analytics-chart'), {
+                        type: 'doughnut',
+                        data: { labels: ['Members', 'Claims', 'Votes'], datasets: [{ data: [50, 10, 20], backgroundColor: ['#6366f1', '#ef4444', '#10b981'] }] },
+                        options: { plugins: { legend: { position: 'bottom' } } }
+                    });
+                }
+            },
+            recordWelfare(id) {
+                const w = App.data.welfare.find(w => w.id === id);
+                w.Status = 'Treas';
+                App.data.chairQueue.push({ type: 'Welfare', data: w });
+                App.saveData();
+                App.toast('Recorded & Forwarded', 'success');
+                App.renderAdmin(App.data.role);
+            },
+            fundWelfare(id) {
+                const w = App.data.welfare.find(w => w.id === id);
+                w.Status = 'Chair';
+                App.data.transactions.push({ Title: `Welfare Fund: ${w.Type}`, Date: new Date().toLocaleDateString(), Amount: w.Amount, Type: 'out', Member: w.Member });
+                App.saveData();
+                App.toast('Funded & Forwarded', 'success');
+                App.renderAdmin(App.data.role);
+            },
+            approveItem(idx) {
+                const item = App.data.chairQueue[idx];
+                if (item.type === 'Welfare') {
+                    item.data.Status = 'Paid';
+                    App.data.transactions.push({ Title: `Welfare Payout: ${item.data.Type}`, Date: new Date().toLocaleDateString(), Amount: item.data.Amount, Type: 'out', Member: item.data.Member });
+                } else if (item.type === 'News') {
+                    App.data.news.unshift({ text: item.data, signedBy: 'Chairperson' });
+                }
+                App.data.chairQueue.splice(idx, 1);
+                App.saveData();
+                App.toast('Approved & Executed', 'success');
+                App.renderAdmin(App.data.role);
+            },
+            createPoll() {
                 const q = document.getElementById('poll-question').value;
-                const o = document.getElementById('poll-opts').value;
-                if(!q || !o) return;
-                App.data.polls.unshift({ id: Date.now(), q, opts: o.split(','), votes: o.split(',').map(()=>0), voters: [], active: true });
-                App.toast('Poll Created', 'success');
-                // Reset inputs
+                const optsStr = document.getElementById('poll-opts').value;
+                if (!q || !optsStr) return App.toast('Fill question and options', 'error');
+                const opts = optsStr.split(',').map(o => o.trim());
+                App.data.polls.unshift({ id: Date.now(), q, opts, votes: new Array(opts.length).fill(0), voters: [], active: true });
+                App.saveData();
+                App.toast('Poll Launched', 'success');
                 document.getElementById('poll-question').value = '';
                 document.getElementById('poll-opts').value = '';
             },
-            
-            submitNews: () => {
+            closePoll() {
+                // Find and deactivate last poll
+                const lastPoll = App.data.polls[0];
+                if (lastPoll) lastPoll.active = false;
+                App.saveData();
+                App.toast('Poll Closed', 'info');
+            },
+            submitNews() {
                 const txt = document.getElementById('sec-news').value;
-                if(!txt) return;
-                // PUSH TO CHAIR QUEUE
+                if (!txt) return App.toast('Enter message', 'error');
                 App.data.chairQueue.push({ id: Date.now(), type: 'News', data: txt, author: 'Secretary' });
+                App.saveData();
                 document.getElementById('sec-news').value = '';
-                App.toast('Draft sent to Chair for Approval', 'info');
+                App.toast('Submitted to Chair', 'info');
             },
-
-            renderSecView: () => {
-                // Filter Welfare for Step 1 (Sec)
-                const queue = App.data.welfare.filter(w => w.status === 'Sec');
-                const el = document.getElementById('sec-welfare-queue');
-                el.innerHTML = queue.length ? '' : '<p class="text-slate-500 text-sm">No new welfare claims to record.</p>';
-                queue.forEach(w => {
-                    el.innerHTML += `<div class="bg-dark-900 p-3 rounded-lg border border-white/10 flex justify-between items-center"><span class="text-white text-sm">${w.member}: ${w.type} (${w.amount})</span><button onclick="App.pushWelfare('${w.id}', 'Treas')" class="bg-blue-600 text-xs px-3 py-1 rounded text-white">Record & Fwd</button></div>`;
-                });
+            publishDirectComm() {
+                const txt = document.getElementById('chair-comm').value;
+                if (!txt) return App.toast('Enter message', 'error');
+                App.data.news.unshift({ text: txt, signedBy: 'Chairperson (Direct)' });
+                App.saveData();
+                document.getElementById('chair-comm').value = '';
+                App.toast('Published to All Members', 'success');
+                App.renderNews();
             },
-
-            // TREASURER
-            renderTreasView: () => {
-                // Filter Welfare for Step 2 (Treas)
-                const queue = App.data.welfare.filter(w => w.status === 'Treas');
-                const el = document.getElementById('treas-welfare-queue');
-                el.innerHTML = queue.length ? '' : '<p class="text-slate-500 text-sm">No approved claims awaiting funds.</p>';
-                queue.forEach(w => {
-                    el.innerHTML += `<div class="bg-dark-900 p-3 rounded-lg border border-white/10 flex justify-between items-center"><span class="text-white text-sm">${w.member}: ${w.type} (${w.amount})</span><button onclick="App.pushWelfare('${w.id}', 'Chair')" class="bg-emerald-600 text-xs px-3 py-1 rounded text-white">Allocate Funds</button></div>`;
-                });
+            executeHandover(role) {
+                const name = document.getElementById(`handover-name-${role}`).value;
+                if (!name) return App.toast('Enter name', 'error');
+                App.data.signatures[role.charAt(0).toUpperCase() + role.slice(1)] = name;
+                App.saveData();
+                App.toast(`Handover to ${name} Executed`, 'success');
+                document.getElementById(`handover-name-${role}`).value = '';
             },
-
-            // HELPER: Move Welfare State
-            pushWelfare: (id, nextStatus) => {
-                const item = App.data.welfare.find(w => w.id == id);
-                item.status = nextStatus;
-                
-                // If moving to Chair, also add to Chair's "Gate" Queue for visibility
-                if(nextStatus === 'Chair') {
-                    App.data.chairQueue.push({ id: Date.now(), type: 'Welfare', data: item, author: 'Treasurer' });
-                }
-
-                if(App.data.role === 'Secretary') App.renderSecView();
-                if(App.data.role === 'Treasurer') App.renderTreasView();
-                App.toast('Workflow Advanced', 'success');
-            },
-
-            // CHAIRPERSON (THE GATEKEEPER)
-            renderChairView: () => {
-                const el = document.getElementById('chair-queue');
-                el.innerHTML = App.data.chairQueue.length ? '' : '<p class="text-slate-500 text-sm italic">Nothing pending authorization.</p>';
-                
-                App.data.chairQueue.forEach((item, idx) => {
-                    let desc = '';
-                    let action = '';
-                    
-                    if(item.type === 'News') {
-                        desc = `<span class="text-blue-400 font-bold">COMMUNICATION:</span> "${item.data}"`;
-                        action = 'Approve & Publish';
-                    } else if (item.type === 'Welfare') {
-                        desc = `<span class="text-pink-400 font-bold">WELFARE RELEASE:</span> Pay ${item.data.member} KES ${item.data.amount}`;
-                        action = 'Sign & Release';
-                    }
-
-                    el.innerHTML += `
-                    <div class="bg-dark-900 p-4 rounded-xl border-l-4 border-purple-500 animate-slide-up">
-                        <div class="flex justify-between mb-2"><span class="text-[10px] uppercase text-slate-500 font-bold">From: ${item.author}</span><span class="text-[10px] uppercase text-purple-400 font-bold">Action Required</span></div>
-                        <p class="text-sm text-white mb-3">${desc}</p>
-                        <button onclick="App.chairApprove(${idx})" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 rounded-lg text-xs flex items-center justify-center gap-2"><i class="fa-solid fa-file-signature"></i> ${action}</button>
-                    </div>`;
-                });
-            },
-
-            chairApprove: (idx) => {
-                const item = App.data.chairQueue[idx];
-                
-                if(item.type === 'News') {
-                    App.data.news.unshift({ text: item.data, signedBy: 'Chairperson' });
-                } else if (item.type === 'Welfare') {
-                    const w = App.data.welfare.find(x => x.id == item.data.id);
-                    if(w) w.status = 'Paid';
-                    // Add to transactions
-                    App.data.transactions.unshift({ t: `Welfare: ${w.type}`, d: 'Today', a: w.amount, type: 'out' });
-                }
-
-                App.data.chairQueue.splice(idx, 1);
-                App.renderChairView();
-                App.toast('Signed & Authorized.', 'success');
-            },
-
-            toast: (msg, type) => { const box = document.getElementById('toast-box'); const el = document.createElement('div'); const color = type === 'success' ? 'text-emerald-400 border-emerald-500/30' : 'text-blue-400 border-blue-500/30'; el.className = `glass ${color} px-4 py-3 rounded-xl shadow-2xl text-sm font-bold flex items-center gap-2 animate-fade-in border`; el.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`; box.appendChild(el); setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000); }
+            toast(msg, type = 'info') {
+                const box = document.getElementById('toast-box');
+                const el = document.createElement('div');
+                const color = type === 'success' ? 'border-emerald-500/30 text-emerald-400' : type === 'error' ? 'border-red-500/30 text-red-400' : 'border-blue-500/30 text-blue-400';
+                el.className = `glass ${color} px-4 py-3 rounded-xl shadow-2xl text-sm font-bold flex items-center gap-2 border animate-fade-in`;
+                el.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info-circle'}"></i>${msg}`;
+                box.appendChild(el);
+                setTimeout(() => {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 300);
+                }, 3000);
+            }
         };
-
-        window.onload = () => { setTimeout(() => document.getElementById('splash-screen').classList.add('opacity-0', 'pointer-events-none'), 1500); };
+        // Init
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 700);
+            }, 1500);
+            App.renderAll(); // Load initial data
+        };
     </script>
 </body>
 </html>
