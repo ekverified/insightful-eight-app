@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Insightful Eight Ltd | v1.0.0</title>
-   
+  
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -73,7 +73,7 @@
     </div>
     <div id="toast-box" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
     <div id="portal-member" class="hidden flex w-full h-full transition-all duration-500 transform scale-100 opacity-100 origin-center">
-       
+      
         <aside class="hidden md:flex flex-col w-72 bg-dark-950/50 backdrop-blur-xl border-r border-dark-800 z-20">
             <div class="h-24 flex items-center px-8 border-b border-white/5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-xl mr-3 shadow-lg shadow-brand-500/20">i8</div>
@@ -96,7 +96,7 @@
                 <button onclick="App.switchContext('admin')" class="ml-auto text-amber-500 text-xs font-bold uppercase border border-amber-500/30 px-3 py-1.5 rounded-lg active:bg-amber-500/10">Admin</button>
             </header>
             <div id="member-view-container" class="flex-1 overflow-y-auto hide-scroll p-5 pb-32 md:p-10">
-               
+              
                 <section id="view-dashboard" class="space-y-8 animate-slide-up max-w-6xl mx-auto">
                     <div class="flex justify-between items-end">
                         <div><h2 class="text-3xl font-bold text-white tracking-tight">Insightful Eight Ltd</h2><p class="text-sm text-slate-400 mt-1">Welcome back, <span id="welcome-user"></span>.</p></div>
@@ -106,7 +106,7 @@
                         <h4 class="font-bold text-white">Personal Notifications</h4>
                         <div id="notif-list"></div>
                     </div>
-                   
+                  
                     <div class="glass p-6 rounded-2xl border-l-4 border-l-brand-500">
                         <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-400"></i> Official Communications</h3><span class="text-[10px] text-slate-500">Verified by Chair</span></div>
                         <div id="member-news-feed" class="space-y-4"></div>
@@ -137,7 +137,7 @@
                         <h2 class="text-2xl font-bold text-white">Welfare Support</h2>
                         <button onclick="App.openWelfareModal()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-pink-500/20"><i class="fa-solid fa-heart-pulse mr-2"></i>Claim Support</button>
                     </div>
-                   
+                  
                     <div class="glass p-6 rounded-2xl border border-pink-500/20">
                         <p class="text-sm text-slate-400 mb-6">Welfare is support, not a loan. All claims undergo the 3-Step Verification process.</p>
                         <div id="welfare-list" class="space-y-4">
@@ -195,7 +195,7 @@
             <button onclick="App.adminLogout()" class="text-xs font-bold text-red-400 hover:text-red-300 uppercase border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500/10 transition"><i class="fa-solid fa-power-off mr-1"></i> Secure Exit</button>
         </header>
         <main class="flex-1 relative overflow-hidden bg-gradient-to-br from-dark-950 via-[#0f1221] to-dark-950 p-6 md:p-10 overflow-y-auto">
-           
+          
             <div id="admin-screen-login" class="flex flex-col items-center justify-center h-full">
                 <h2 class="text-2xl font-bold text-white mb-8">Select Role</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
@@ -296,7 +296,7 @@
                     <div class="absolute -right-4 -top-4 text-purple-500/10 text-9xl"><i class="fa-solid fa-stamp"></i></div>
                     <h3 class="font-bold text-white text-xl mb-1">The Chairman's Gate</h3>
                     <p class="text-sm text-purple-300 mb-6">Review, Authenticate & Sign off on pending items.</p>
-                   
+                  
                     <div id="chair-queue" class="space-y-3 relative z-10"></div>
                 </div>
                 <div class="glass p-6 rounded-2xl">
@@ -360,6 +360,8 @@
     </div>
     <div id="modal-pin" class="hidden absolute inset-0 z-[70] bg-dark-950/90 backdrop-blur flex items-center justify-center"><div class="glass p-8 rounded-2xl w-full max-w-xs text-center"><h3 id="pin-title" class="text-xl font-bold text-white mb-2">Enter PIN</h3><input type="password" id="pin-input" maxlength="4" class="bg-dark-900 border border-white/10 rounded-xl text-center text-2xl tracking-[1em] text-white p-3 w-full outline-none focus:border-brand-500 transition mb-4"><button onclick="App.verifyPin()" class="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-500">Unlock Console</button><button onclick="document.getElementById('modal-pin').classList.add('hidden')" class="mt-4 text-xs text-slate-500 hover:text-white">Cancel</button></div></div>
     <script>
+        const API_BASE = 'https://app-backend-uagb.vercel.app/api'; // Your backend domain
+        let userToken = localStorage.getItem('token') || '';
         const App = {
             data: {
                 user: 'Felix',
@@ -388,17 +390,40 @@
                 loans: [] // New: Loan applications
             },
             // --- AUTH & NAV ---
-            memberLogin: () => {
+            memberLogin: async () => {
                 const pin = document.getElementById('member-pin').value;
-                const member = App.data.members.find(m => m.pin === pin);
-                if (member) {
-                    App.data.user = member.name;
-                    document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
-                    document.getElementById('portal-member').classList.remove('hidden');
-                    document.getElementById('welcome-user').innerText = App.data.user;
-                    App.renderAll();
-                    App.renderNotifications();
-                } else alert('Wrong PIN');
+                try {
+                    const res = await fetch(`${API_BASE}/auth`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ pin })
+                    });
+                    const data = await res.json();
+                    if (data.user) {
+                        App.data.user = data.user.name;
+                        localStorage.setItem('token', data.token);
+                        userToken = data.token;
+                        document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
+                        document.getElementById('portal-member').classList.remove('hidden');
+                        document.getElementById('welcome-user').innerText = App.data.user;
+                        await App.renderAll();
+                        App.renderNotifications();
+                    } else {
+                        App.toast('Invalid PIN', 'error');
+                    }
+                } catch (err) {
+                    // Fallback demo
+                    if (pin === '1234') {
+                        App.data.user = 'Felix';
+                        document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
+                        document.getElementById('portal-member').classList.remove('hidden');
+                        document.getElementById('welcome-user').innerText = App.data.user;
+                        await App.renderAll();
+                        App.renderNotifications();
+                    } else {
+                        App.toast('Invalid PIN', 'error');
+                    }
+                }
             },
             showRegister: () => {
                 document.getElementById('screen-auth').classList.add('hidden');
@@ -428,7 +453,7 @@
                 target.classList.remove('animate-slide-up');
                 void target.offsetWidth;
                 target.classList.add('animate-slide-up');
-               
+              
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 document.getElementById(`nav-${view}`).classList.add('active');
                 document.getElementById('header-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
@@ -445,78 +470,161 @@
                 }
             },
             // --- MEMBER FEATURES ---
-            renderAll: () => {
-                App.renderNews();
-                App.renderFinance();
-                App.renderWelfareMember();
-                App.renderPolls();
-                App.renderApprovedReports();
+            renderAll: async () => {
+                await Promise.all([
+                    App.renderNews(),
+                    App.renderFinance(),
+                    App.renderWelfareMember(),
+                    App.renderPolls(),
+                    App.renderApprovedReports(),
+                    App.renderNotifications()
+                ]);
                 document.getElementById('profile-name').value = App.data.user;
                 // Find email
                 const member = App.data.members.find(m => m.name === App.data.user);
                 if (member) document.getElementById('profile-email').value = member.email;
             },
-            renderNews: () => {
+            renderNews: async () => {
                 const el = document.getElementById('member-news-feed');
-                el.innerHTML = App.data.news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
-                App.data.news.forEach(n => {
-                    el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
-                });
+                try {
+                    const res = await fetch(`${API_BASE}/news`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const news = await res.json();
+                    el.innerHTML = news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
+                    news.forEach(n => {
+                        el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
+                    });
+                } catch (err) {
+                    // Fallback to App.data.news
+                    // ... demo render
+                    el.innerHTML = App.data.news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
+                    App.data.news.forEach(n => {
+                        el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
+                    });
+                }
             },
-            renderApprovedReports: () => {
+            renderApprovedReports: async () => {
                 const el = document.getElementById('approved-reports');
-                el.innerHTML = App.data.approvedReports.length ? '' : '<p class="text-slate-500 text-sm italic">No approved reports yet.</p>';
-                App.data.approvedReports.forEach(r => {
-                    el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${r.text.substring(0, 200)}...</p><p class="text-[10px] text-slate-500 mt-2 text-right">Report: ${r.file || 'N/A'} | Signed: Chair</p></div>`;
-                });
+                try {
+                    const res = await fetch(`${API_BASE}/approved-reports`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const reports = await res.json();
+                    el.innerHTML = reports.length ? '' : '<p class="text-slate-500 text-sm italic">No approved reports yet.</p>';
+                    reports.forEach(r => {
+                        el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${r.text.substring(0, 200)}...</p><p class="text-[10px] text-slate-500 mt-2 text-right">Report: ${r.file || 'N/A'} | Signed: Chair</p></div>`;
+                    });
+                } catch (err) {
+                    // Fallback to App.data.approvedReports
+                    el.innerHTML = App.data.approvedReports.length ? '' : '<p class="text-slate-500 text-sm italic">No approved reports yet.</p>';
+                    App.data.approvedReports.forEach(r => {
+                        el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${r.text.substring(0, 200)}...</p><p class="text-[10px] text-slate-500 mt-2 text-right">Report: ${r.file || 'N/A'} | Signed: Chair</p></div>`;
+                    });
+                }
             },
-            renderFinance: () => {
-                const list = document.getElementById('finance-list'); list.innerHTML = '';
-                App.data.transactions.filter(t => t.member === App.data.user || !t.member).forEach(t => {
-                    list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
-                });
+            renderFinance: async () => {
+                const list = document.getElementById('finance-list'); 
+                list.innerHTML = '';
+                try {
+                    const res = await fetch(`${API_BASE}/transactions`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const transactions = await res.json();
+                    transactions.filter(t => t.member === App.data.user || !t.member).forEach(t => {
+                        list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
+                    });
+                } catch (err) {
+                    // Fallback to App.data.transactions
+                    App.data.transactions.filter(t => t.member === App.data.user || !t.member).forEach(t => {
+                        list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
+                    });
+                }
             },
             // --- WELFARE SYSTEM (3-TIER) ---
             openWelfareModal: () => document.getElementById('modal-welfare').classList.remove('hidden'),
-           
-            submitWelfare: () => {
+          
+            submitWelfare: async () => {
                 const type = document.getElementById('welfare-type').value;
                 const amt = document.getElementById('welfare-amount').value;
                 if(!amt) return;
-               
-                // Add to Welfare array with Step 1, using actual user name
-                App.data.welfare.push({ id: Date.now(), type, amount: amt, member: App.data.user, status: 'Sec', date: new Date().toLocaleDateString() });
-               
-                // Log and notify (personal)
-                App.logAction('Member Welfare Claim Submitted', 'Member', `${App.data.user}: Type: ${type}, Amount: KES ${amt}`);
-                App.addPersonalNotification(`${App.data.user} welfare claim submitted for review.`);
-               
-                document.getElementById('modal-welfare').classList.add('hidden');
-                App.toast('Claim Sent to Secretary for Recording', 'success');
-                App.renderWelfareMember();
+                try {
+                    const res = await fetch(`${API_BASE}/welfare`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${userToken}`
+                        },
+                        body: JSON.stringify({ type, amount: amt })
+                    });
+                    if (res.ok) {
+                        App.addPersonalNotification(`${App.data.user} welfare claim submitted for review.`);
+                        document.getElementById('modal-welfare').classList.add('hidden');
+                        App.toast('Claim Sent to Secretary for Recording', 'success');
+                        await App.renderWelfareMember();
+                    } else {
+                        throw new Error('Backend error');
+                    }
+                } catch (err) {
+                    // Fallback demo
+                    App.data.welfare.push({ id: Date.now(), type, amount: amt, member: App.data.user, status: 'Sec', date: new Date().toLocaleDateString() });
+                    // Log and notify (personal)
+                    App.logAction('Member Welfare Claim Submitted', 'Member', `${App.data.user}: Type: ${type}, Amount: KES ${amt}`);
+                    App.addPersonalNotification(`${App.data.user} welfare claim submitted for review.`);
+                    document.getElementById('modal-welfare').classList.add('hidden');
+                    App.toast('Claim Sent to Secretary for Recording', 'success');
+                    await App.renderWelfareMember();
+                }
             },
-            renderWelfareMember: () => {
-                const list = document.getElementById('welfare-list'); list.innerHTML = '';
-                if(App.data.welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
-               
-                App.data.welfare.filter(w => w.member === App.data.user).forEach(w => {
-                    // Logic for visual stepper
-                    const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
-                    const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
-                    const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
-                    list.innerHTML += `
-                    <div class="bg-dark-900 p-4 rounded-xl border border-white/5">
-                        <div class="flex justify-between mb-3"><span class="font-bold text-white text-sm">${w.type}</span><span class="font-mono text-pink-400 text-sm">KES ${w.amount}</span></div>
-                        <div class="flex items-center justify-between text-xs px-2">
-                            <div class="text-center ${s1}"><i class="fa-solid fa-file-pen"></i><p class="scale-75">Recorded</p></div>
-                            <div class="h-0.5 w-8 bg-white/10"></div>
-                            <div class="text-center ${s2}"><i class="fa-solid fa-coins"></i><p class="scale-75">Funded</p></div>
-                            <div class="h-0.5 w-8 bg-white/10"></div>
-                            <div class="text-center ${s3}"><i class="fa-solid fa-stamp"></i><p class="scale-75">Released</p></div>
-                        </div>
-                        <p class="text-xs text-slate-500 mt-2 text-center">Claimed by: ${w.member} on ${w.date}</p>
-                    </div>`;
-                });
+            renderWelfareMember: async () => {
+                const list = document.getElementById('welfare-list'); 
+                list.innerHTML = '';
+                try {
+                    const res = await fetch(`${API_BASE}/welfare`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const welfare = await res.json();
+                    if(welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
+                    welfare.filter(w => w.member === App.data.user).forEach(w => {
+                        // Logic for visual stepper
+                        const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
+                        const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
+                        const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
+                        list.innerHTML += `
+                        <div class="bg-dark-900 p-4 rounded-xl border border-white/5">
+                            <div class="flex justify-between mb-3"><span class="font-bold text-white text-sm">${w.type}</span><span class="font-mono text-pink-400 text-sm">KES ${w.amount}</span></div>
+                            <div class="flex items-center justify-between text-xs px-2">
+                                <div class="text-center ${s1}"><i class="fa-solid fa-file-pen"></i><p class="scale-75">Recorded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s2}"><i class="fa-solid fa-coins"></i><p class="scale-75">Funded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s3}"><i class="fa-solid fa-stamp"></i><p class="scale-75">Released</p></div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2 text-center">Claimed by: ${w.member} on ${w.date}</p>
+                        </div>`;
+                    });
+                } catch (err) {
+                    // Fallback to local
+                    if(App.data.welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
+                    App.data.welfare.filter(w => w.member === App.data.user).forEach(w => {
+                        // Logic for visual stepper
+                        const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
+                        const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
+                        const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
+                        list.innerHTML += `
+                        <div class="bg-dark-900 p-4 rounded-xl border border-white/5">
+                            <div class="flex justify-between mb-3"><span class="font-bold text-white text-sm">${w.type}</span><span class="font-mono text-pink-400 text-sm">KES ${w.amount}</span></div>
+                            <div class="flex items-center justify-between text-xs px-2">
+                                <div class="text-center ${s1}"><i class="fa-solid fa-file-pen"></i><p class="scale-75">Recorded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s2}"><i class="fa-solid fa-coins"></i><p class="scale-75">Funded</p></div>
+                                <div class="h-0.5 w-8 bg-white/10"></div>
+                                <div class="text-center ${s3}"><i class="fa-solid fa-stamp"></i><p class="scale-75">Released</p></div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-2 text-center">Claimed by: ${w.member} on ${w.date}</p>
+                        </div>`;
+                    });
+                }
             },
             openLoanModal: () => document.getElementById('modal-loan').classList.remove('hidden'),
             submitLoan: () => {
@@ -530,11 +638,16 @@
                 App.toast('Loan Application Sent', 'success');
             },
             // --- NOTIFICATIONS (Personal Only) ---
-            addPersonalNotification: (msg) => {
-                App.data.notifications.unshift({ id: Date.now(), msg, read: false });
-                App.renderNotifications();
-            },
-            renderNotifications: () => {
+            renderNotifications: async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/notifications`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const notifications = await res.json();
+                    App.data.notifications = notifications;
+                } catch (err) {
+                    // Fallback to local
+                }
                 const unread = App.data.notifications.filter(n => !n.read).length;
                 document.getElementById('notif-badge').innerText = unread;
                 document.getElementById('notif-badge').classList.toggle('hidden', unread === 0);
@@ -543,6 +656,10 @@
                 App.data.notifications.slice(0, 5).forEach(n => {
                     list.innerHTML += `<div class="p-2 bg-white/5 rounded text-sm ${n.read ? 'opacity-50' : ''}" onclick="App.markRead(${n.id})">${n.msg}</div>`;
                 });
+            },
+            addPersonalNotification: (msg) => {
+                App.data.notifications.unshift({ id: Date.now(), msg, read: false });
+                App.renderNotifications();
             },
             toggleNotifications: () => {
                 const panel = document.getElementById('notifications-panel');
@@ -564,8 +681,18 @@
                 }
             },
             // --- POLLING (Live Result Logic) ---
-            renderPolls: () => {
-                const con = document.getElementById('polls-container'); con.innerHTML = '';
+            renderPolls: async () => {
+                const con = document.getElementById('polls-container'); 
+                con.innerHTML = '';
+                try {
+                    const res = await fetch(`${API_BASE}/polls`, {
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                    const polls = await res.json();
+                    App.data.polls = polls;
+                } catch (err) {
+                    // Fallback to local
+                }
                 document.getElementById('dash-poll-count').innerText = App.data.polls.filter(p => p.active).length;
                 App.data.polls.forEach((p, idx) => {
                     if (!p.active) {
@@ -600,14 +727,14 @@
                 const radios = document.getElementsByName(`poll_${App.data.polls[idx].id}`);
                 let val = -1;
                 for(let r of radios) if(r.checked) val = parseInt(r.value);
-               
+              
                 if(val === -1) return alert('Select an option');
                 App.data.polls[idx].votes[val]++;
                 App.data.polls[idx].voters.push(App.data.user);
-                
+               
                 // Log vote for monitoring
                 App.logAction('Member Vote Cast', 'Member', `${App.data.user}: Poll: ${App.data.polls[idx].q}, Option: ${App.data.polls[idx].opts[val]}`);
-                
+               
                 App.addPersonalNotification('Your vote has been recorded.');
                 App.toast('Vote Cast Successfully', 'success');
                 App.renderPolls();
@@ -663,7 +790,7 @@
                 if(document.getElementById('pin-input').value === '1234') {
                     document.getElementById('modal-pin').classList.add('hidden');
                     document.getElementById('admin-screen-login').classList.add('hidden');
-                   
+                  
                     const role = App.data.role;
                     document.getElementById(`view-admin-${role}`).classList.remove('hidden');
                     document.getElementById('admin-badge').innerText = role;
@@ -696,7 +823,7 @@
                 document.getElementById('portal-member').classList.remove('hidden');
             },
             // --- ROLE WORKFLOWS ---
-           
+          
             // New: Logging Helper
             logAction: (action, by, details) => {
                 App.data.logs.unshift({
@@ -706,17 +833,17 @@
                     timestamp: new Date().toLocaleString()
                 });
             },
-           
+          
             // SECRETARY
             createPoll: () => {
                 const q = document.getElementById('poll-question').value;
                 const o = document.getElementById('poll-opts').value;
                 if(!q || !o) return;
                 App.data.polls.unshift({ id: Date.now(), q, opts: o.split(',').map(opt => opt.trim()), votes: o.split(',').map(()=>0), voters: [], active: true });
-                
+               
                 // Log poll creation
                 App.logAction('New Poll Created', 'Secretary', `Question: ${q}, Options: ${o}`);
-                
+               
                 App.toast('Poll Created', 'success');
                 // Reset inputs
                 document.getElementById('poll-question').value = '';
@@ -749,16 +876,16 @@
                     App.toast('Member Removed', 'success');
                 }
             },
-           
+          
             submitNews: () => {
                 const txt = document.getElementById('sec-news').value;
                 if(!txt) return;
                 // PUSH TO CHAIR QUEUE
                 App.data.chairQueue.push({ id: Date.now(), type: 'News', data: txt, author: 'Secretary' });
-                
+               
                 // Log news submission
                 App.logAction('News Draft Submitted to Chair', 'Secretary', txt.substring(0, 100) + (txt.length > 100 ? '...' : ''));
-                
+               
                 document.getElementById('sec-news').value = '';
                 App.toast('Draft sent to Chair for Approval', 'info');
             },
@@ -794,10 +921,10 @@
                 const reportData = { text: reportText, file: fileName };
                 // PUSH TO CHAIR QUEUE
                 App.data.chairQueue.push({ id: Date.now(), type: 'FinancialReport', data: reportData, author: 'Treasurer' });
-                
+               
                 // Log report submission
                 App.logAction('Financial Report Submitted to Chair', 'Treasurer', reportText.substring(0, 100) + (reportText.length > 100 ? '...' : '') + (fileName ? ` | File: ${fileName}` : ''));
-                
+               
                 // Reset
                 document.getElementById('treas-report').value = '';
                 document.getElementById('treas-file-name').innerText = '';
@@ -809,10 +936,10 @@
                 const item = App.data.welfare.find(w => w.id == id);
                 const prevStatus = item.status;
                 item.status = nextStatus;
-               
+              
                 // Log welfare advancement
                 App.logAction(`Welfare Advanced from ${prevStatus} to ${nextStatus}`, App.data.role, `${item.member}: ${item.type}, Amount: KES ${item.amount}`);
-               
+              
                 // If moving to Chair, also add to Chair's "Gate" Queue for visibility
                 if(nextStatus === 'Chair') {
                     App.data.chairQueue.push({ id: Date.now(), type: 'Welfare', data: item, author: 'Treasurer' });
@@ -825,11 +952,11 @@
             renderChairView: () => {
                 const el = document.getElementById('chair-queue');
                 el.innerHTML = App.data.chairQueue.length ? '' : '<p class="text-slate-500 text-sm italic">Nothing pending authorization.</p>';
-               
+              
                 App.data.chairQueue.forEach((item, idx) => {
                     let desc = '';
                     let action = '';
-                   
+                  
                     if(item.type === 'News') {
                         desc = `<span class="text-blue-400 font-bold">COMMUNICATION:</span> "${item.data}"`;
                         action = 'Approve & Publish';
@@ -853,7 +980,7 @@
             },
             chairApprove: (idx) => {
                 const item = App.data.chairQueue[idx];
-               
+              
                 if(item.type === 'News') {
                     App.data.news.unshift({ text: item.data, signedBy: App.data.signatures.Chairperson });
                     // Log news approval (global on dashboard)
@@ -867,7 +994,7 @@
                         // Personal notification
                         App.addPersonalNotification(`${w.member}, your welfare claim has been approved and paid.`);
                     }
-                    
+                   
                     // Log welfare release
                     App.logAction('Welfare Released & Paid', 'Chairperson', `${w.member}: ${w.type}, Amount: KES ${w.amount}`);
                 } else if (item.type === 'FinancialReport') {
@@ -921,7 +1048,7 @@
                 const el = document.getElementById('view-admin-SupervisoryCommittee');
                 html2pdf().from(el).save('i8_Audit_Report.pdf');
                 App.toast('Downloading Audit Report PDF...', 'success');
-                
+               
                 // Log download for self-monitoring
                 App.logAction('Audit Report Downloaded', 'SupervisoryCommittee', 'Full compliance logs exported for review');
             },
@@ -934,7 +1061,6 @@
                 welfareQueue.forEach(w => {
                     welfareEl.innerHTML += `<div class="text-xs text-white">${w.member}: ${w.type} - KES ${w.amount} (${w.status})</div>`;
                 });
-
                 // Render News Queue View
                 const newsEl = document.getElementById('cm-news-view');
                 const newsQueue = App.data.chairQueue.filter(c => c.type === 'News');
@@ -942,7 +1068,6 @@
                 newsQueue.forEach(n => {
                     newsEl.innerHTML += `<div class="text-xs text-white">${n.data.substring(0, 50)}...</div>`;
                 });
-
                 // Render Financial Reports Queue View
                 const finEl = document.getElementById('cm-fin-report-view');
                 const finQueue = App.data.chairQueue.filter(c => c.type === 'FinancialReport');
@@ -955,16 +1080,16 @@
                 const note = document.getElementById(`cm-${section}-note`).value;
                 if(!note) return;
                 // PUSH TO CHAIR QUEUE as CommitteeNote
-                App.data.chairQueue.push({ 
-                    id: Date.now(), 
-                    type: 'CommitteeNote', 
-                    data: { note, section }, 
-                    author: 'CommitteeMember' 
+                App.data.chairQueue.push({
+                    id: Date.now(),
+                    type: 'CommitteeNote',
+                    data: { note, section },
+                    author: 'CommitteeMember'
                 });
-                
+               
                 // Log note submission
                 App.logAction('Committee Note Submitted to Chair', 'CommitteeMember', `${note.substring(0, 50)}... on ${section}`);
-                
+               
                 // Reset
                 document.getElementById(`cm-${section}-note`).value = '';
                 App.toast('Note sent to Chair', 'info');
@@ -978,29 +1103,32 @@
                 const name = nameInput.value;
                 const sig = sigSelect.value;
                 if(!name || !sig) return alert('Name and signature required');
-                
+               
                 // Simulate handover: Update signatures
                 App.data.signatures[currentRole] = sig;
-                
+               
                 // Log handover
                 App.logAction('Admin Handover Executed', App.data.role, `${currentRole}: New: ${name}, Signature: ${sig}`);
-                
+               
                 // Reset inputs
                 nameInput.value = '';
                 sigSelect.value = '';
-                
+               
                 App.toast(`Handover to ${name} as ${currentRole} completed.`, 'success');
             },
             // --- PLACEHOLDERS ---
             uploadSlip: () => App.toast('Upload functionality placeholder.', 'info'),
-            toast: (msg, type) => { 
-                const box = document.getElementById('toast-box'); 
-                const el = document.createElement('div'); 
-                const color = type === 'success' ? 'text-emerald-400 border-emerald-500/30' : 'text-blue-400 border-blue-500/30'; 
-                el.className = `glass ${color} px-4 py-3 rounded-xl shadow-2xl text-sm font-bold flex items-center gap-2 animate-fade-in border`; 
-                el.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`; 
-                box.appendChild(el); 
-                setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000); 
+            toast: (msg, type) => {
+                const box = document.getElementById('toast-box');
+                const el = document.createElement('div');
+                let color = '';
+                if (type === 'success') color = 'text-emerald-400 border-emerald-500/30';
+                else if (type === 'error') color = 'text-red-400 border-red-500/30';
+                else color = 'text-blue-400 border-blue-500/30';
+                el.className = `glass ${color} px-4 py-3 rounded-xl shadow-2xl text-sm font-bold flex items-center gap-2 animate-fade-in border`;
+                el.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
+                box.appendChild(el);
+                setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
             }
         };
         window.onload = () => { setTimeout(() => document.getElementById('splash-screen').classList.add('opacity-0', 'pointer-events-none'), 1500); };
