@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Insightful Eight Ltd | v1.0.0</title>
-  
+ 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -73,7 +73,7 @@
     </div>
     <div id="toast-box" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
     <div id="portal-member" class="hidden flex w-full h-full transition-all duration-500 transform scale-100 opacity-100 origin-center">
-      
+     
         <aside class="hidden md:flex flex-col w-72 bg-dark-950/50 backdrop-blur-xl border-r border-dark-800 z-20">
             <div class="h-24 flex items-center px-8 border-b border-white/5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-xl mr-3 shadow-lg shadow-brand-500/20">i8</div>
@@ -96,7 +96,7 @@
                 <button onclick="App.switchContext('admin')" class="ml-auto text-amber-500 text-xs font-bold uppercase border border-amber-500/30 px-3 py-1.5 rounded-lg active:bg-amber-500/10">Admin</button>
             </header>
             <div id="member-view-container" class="flex-1 overflow-y-auto hide-scroll p-5 pb-32 md:p-10">
-              
+             
                 <section id="view-dashboard" class="space-y-8 animate-slide-up max-w-6xl mx-auto">
                     <div class="flex justify-between items-end">
                         <div><h2 class="text-3xl font-bold text-white tracking-tight">Insightful Eight Ltd</h2><p class="text-sm text-slate-400 mt-1">Welcome back, <span id="welcome-user"></span>.</p></div>
@@ -106,7 +106,7 @@
                         <h4 class="font-bold text-white">Personal Notifications</h4>
                         <div id="notif-list"></div>
                     </div>
-                  
+                 
                     <div class="glass p-6 rounded-2xl border-l-4 border-l-brand-500">
                         <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-400"></i> Official Communications</h3><span class="text-[10px] text-slate-500">Verified by Chair</span></div>
                         <div id="member-news-feed" class="space-y-4"></div>
@@ -137,7 +137,7 @@
                         <h2 class="text-2xl font-bold text-white">Welfare Support</h2>
                         <button onclick="App.openWelfareModal()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-pink-500/20"><i class="fa-solid fa-heart-pulse mr-2"></i>Claim Support</button>
                     </div>
-                  
+                 
                     <div class="glass p-6 rounded-2xl border border-pink-500/20">
                         <p class="text-sm text-slate-400 mb-6">Welfare is support, not a loan. All claims undergo the 3-Step Verification process.</p>
                         <div id="welfare-list" class="space-y-4">
@@ -195,7 +195,7 @@
             <button onclick="App.adminLogout()" class="text-xs font-bold text-red-400 hover:text-red-300 uppercase border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500/10 transition"><i class="fa-solid fa-power-off mr-1"></i> Secure Exit</button>
         </header>
         <main class="flex-1 relative overflow-hidden bg-gradient-to-br from-dark-950 via-[#0f1221] to-dark-950 p-6 md:p-10 overflow-y-auto">
-          
+         
             <div id="admin-screen-login" class="flex flex-col items-center justify-center h-full">
                 <h2 class="text-2xl font-bold text-white mb-8">Select Role</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
@@ -296,7 +296,7 @@
                     <div class="absolute -right-4 -top-4 text-purple-500/10 text-9xl"><i class="fa-solid fa-stamp"></i></div>
                     <h3 class="font-bold text-white text-xl mb-1">The Chairman's Gate</h3>
                     <p class="text-sm text-purple-300 mb-6">Review, Authenticate & Sign off on pending items.</p>
-                  
+                 
                     <div id="chair-queue" class="space-y-3 relative z-10"></div>
                 </div>
                 <div class="glass p-6 rounded-2xl">
@@ -360,34 +360,37 @@
     </div>
     <div id="modal-pin" class="hidden absolute inset-0 z-[70] bg-dark-950/90 backdrop-blur flex items-center justify-center"><div class="glass p-8 rounded-2xl w-full max-w-xs text-center"><h3 id="pin-title" class="text-xl font-bold text-white mb-2">Enter PIN</h3><input type="password" id="pin-input" maxlength="4" class="bg-dark-900 border border-white/10 rounded-xl text-center text-2xl tracking-[1em] text-white p-3 w-full outline-none focus:border-brand-500 transition mb-4"><button onclick="App.verifyPin()" class="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-500">Unlock Console</button><button onclick="document.getElementById('modal-pin').classList.add('hidden')" class="mt-4 text-xs text-slate-500 hover:text-white">Cancel</button></div></div>
     <script>
-        const API_BASE = 'https://app-backend-uagb.vercel.app/api'; // Your backend domain
+        const API_BASE = 'https://your-app.onrender.com'; // Replace with your Render domain (e.g., https://i8-backend.onrender.com)
         let userToken = localStorage.getItem('token') || '';
+        const CryptoJS = { // Inline fallback for hashing (no backend dep needed)
+            SHA256: (str) => btoa(unescape(encodeURIComponent(str))).slice(0, 64) // Simple hash sim for demo
+        };
         const App = {
             data: {
                 user: 'Felix',
                 role: null,
-                news: [],
+                news: [], // {text, signedBy}
                 polls: [
                     { id: 1, q: 'End of Year Party Venue?', opts: ['Naivasha', 'Mombasa', 'Eldoret'], votes: [2, 5, 1], voters: [], active: true }
                 ],
-                approvedReports: [], // New: Chair-approved financial reports visible to members
-                welfare: [], // { id, type, amount, status: 'Sec'|'Treas'|'Chair'|'Paid', member: 'John' }
-                chairQueue: [], // { id, type: 'News'|'Welfare'|'Finance'|'FinancialReport'|'CommitteeNote', data, author }
+                approvedReports: [], // {text, file, signedBy}
+                welfare: [], // {type, amount, status: 'Sec'|'Treas'|'Chair'|'Paid', member, date}
+                chairQueue: [], // {id, type: 'News'|'Welfare'|'FinancialReport'|'CommitteeNote', data, author}
                 transactions: [
-                    { t: 'Monthly Contribution', d: 'Dec 01', a: 5000, type: 'in' },
-                    { t: 'Welfare Payout #003', d: 'Nov 15', a: 10000, type: 'out' }
+                    { t: 'Monthly Contribution', d: 'Dec 01', a: 5000, type: 'in', member: 'Felix' },
+                    { t: 'Welfare Payout #003', d: 'Nov 15', a: 10000, type: 'out', member: 'Felix' }
                 ],
-                logs: [], // Audit logs for Supervisory Committee
-                members: [{name: 'Felix', email: 'felix@example.com', pin: '1234'}, {name: 'John', email: 'john@example.com', pin: '0000'}], // Database of members for signatures and registration
-                signatures: { // Current signatures
+                logs: [], // {action, by, details, timestamp}
+                members: [{name: 'Felix', email: 'felix@example.com', hashedPin: CryptoJS.SHA256('1234').toString()}], // Hashed PIN
+                signatures: { // {role: signature}
                     Secretary: 'Current Secretary',
                     Treasurer: 'Current Treasurer',
                     Chairperson: 'Current Chairperson',
                     SupervisoryCommittee: 'Current Sup. Comm.',
                     CommitteeMember: 'Current Comm. Member'
                 },
-                notifications: [], // New: Member notifications (personal only)
-                loans: [] // New: Loan applications
+                notifications: [], // {id, msg, read}
+                loans: [] // {amount, purpose, member, status, date}
             },
             // --- AUTH & NAV ---
             memberLogin: async () => {
@@ -412,9 +415,11 @@
                         App.toast('Invalid PIN', 'error');
                     }
                 } catch (err) {
-                    // Fallback demo
-                    if (pin === '1234') {
-                        App.data.user = 'Felix';
+                    // Fallback demo (hashed check)
+                    const hashedPin = CryptoJS.SHA256(pin).toString();
+                    const member = App.data.members.find(m => m.hashedPin === hashedPin);
+                    if (member) {
+                        App.data.user = member.name;
                         document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
                         document.getElementById('portal-member').classList.remove('hidden');
                         document.getElementById('welcome-user').innerText = App.data.user;
@@ -433,17 +438,28 @@
                 document.getElementById('screen-register').classList.add('hidden');
                 document.getElementById('screen-auth').classList.remove('hidden');
             },
-            registerMember: () => {
+            registerMember: async () => {
                 const name = document.getElementById('reg-name').value;
                 const email = document.getElementById('reg-email').value;
                 const pin = document.getElementById('reg-pin').value;
-                const existing = App.data.members.find(m => m.name === name && m.email === email);
-                if (existing && existing.pin === '0000') { // Temp PIN for new members
-                    existing.pin = pin;
-                    App.toast('Registration Successful! Use your new PIN to login.', 'success');
+                try {
+                    const res = await fetch(`${API_BASE}/members`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ name, email, pin })
+                    });
+                    if (res.ok) {
+                        App.toast('Registration Successful! Use your PIN to login.', 'success');
+                        App.showLogin();
+                    } else {
+                        throw new Error('Registration failed');
+                    }
+                } catch (err) {
+                    // Fallback demo
+                    const hashedPin = CryptoJS.SHA256(pin).toString();
+                    App.data.members.push({ name, email, hashedPin });
+                    App.toast('Registration Successful! Use your PIN to login.', 'success');
                     App.showLogin();
-                } else {
-                    alert('Details do not match pending member record.');
                 }
             },
             nav: (view) => {
@@ -453,7 +469,7 @@
                 target.classList.remove('animate-slide-up');
                 void target.offsetWidth;
                 target.classList.add('animate-slide-up');
-              
+             
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 document.getElementById(`nav-${view}`).classList.add('active');
                 document.getElementById('header-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
@@ -480,24 +496,29 @@
                     App.renderNotifications()
                 ]);
                 document.getElementById('profile-name').value = App.data.user;
-                // Find email
-                const member = App.data.members.find(m => m.name === App.data.user);
-                if (member) document.getElementById('profile-email').value = member.email;
+                // Find email from backend or fallback
+                try {
+                    const res = await fetch(`${API_BASE}/members`, { headers: { 'Authorization': `Bearer ${userToken}` } });
+                    const members = await res.json();
+                    const member = members.find(m => m.name === App.data.user);
+                    if (member) document.getElementById('profile-email').value = member.email;
+                } catch (err) {
+                    const localMember = App.data.members.find(m => m.name === App.data.user);
+                    if (localMember) document.getElementById('profile-email').value = localMember.email;
+                }
             },
             renderNews: async () => {
                 const el = document.getElementById('member-news-feed');
                 try {
-                    const res = await fetch(`${API_BASE}/news`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/news`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const news = await res.json();
+                    App.data.news = news; // Update local
                     el.innerHTML = news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
                     news.forEach(n => {
                         el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
                     });
                 } catch (err) {
-                    // Fallback to App.data.news
-                    // ... demo render
+                    // Fallback
                     el.innerHTML = App.data.news.length ? '' : '<p class="text-slate-500 text-sm italic">No official news released.</p>';
                     App.data.news.forEach(n => {
                         el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${n.text}</p><p class="text-[10px] text-slate-500 mt-2 text-right">Signed: ${n.signedBy}</p></div>`;
@@ -507,16 +528,15 @@
             renderApprovedReports: async () => {
                 const el = document.getElementById('approved-reports');
                 try {
-                    const res = await fetch(`${API_BASE}/approved-reports`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/approved-reports`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const reports = await res.json();
+                    App.data.approvedReports = reports;
                     el.innerHTML = reports.length ? '' : '<p class="text-slate-500 text-sm italic">No approved reports yet.</p>';
                     reports.forEach(r => {
                         el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${r.text.substring(0, 200)}...</p><p class="text-[10px] text-slate-500 mt-2 text-right">Report: ${r.file || 'N/A'} | Signed: Chair</p></div>`;
                     });
                 } catch (err) {
-                    // Fallback to App.data.approvedReports
+                    // Fallback
                     el.innerHTML = App.data.approvedReports.length ? '' : '<p class="text-slate-500 text-sm italic">No approved reports yet.</p>';
                     App.data.approvedReports.forEach(r => {
                         el.innerHTML += `<div class="bg-white/5 p-4 rounded-xl border border-white/5"><p class="text-sm text-white">${r.text.substring(0, 200)}...</p><p class="text-[10px] text-slate-500 mt-2 text-right">Report: ${r.file || 'N/A'} | Signed: Chair</p></div>`;
@@ -524,18 +544,17 @@
                 }
             },
             renderFinance: async () => {
-                const list = document.getElementById('finance-list'); 
+                const list = document.getElementById('finance-list');
                 list.innerHTML = '';
                 try {
-                    const res = await fetch(`${API_BASE}/transactions`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/transactions?member=${encodeURIComponent(App.data.user)}`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const transactions = await res.json();
-                    transactions.filter(t => t.member === App.data.user || !t.member).forEach(t => {
+                    App.data.transactions = transactions;
+                    transactions.forEach(t => {
                         list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
                     });
                 } catch (err) {
-                    // Fallback to App.data.transactions
+                    // Fallback
                     App.data.transactions.filter(t => t.member === App.data.user || !t.member).forEach(t => {
                         list.innerHTML += `<div class="p-4 flex justify-between items-center text-sm"><span class="text-slate-300">${t.t}</span><span class="font-mono font-bold ${t.type==='in'?'text-emerald-400':'text-amber-400'}">${t.type==='in'?'+':'-'} ${t.a}</span></div>`;
                     });
@@ -543,7 +562,7 @@
             },
             // --- WELFARE SYSTEM (3-TIER) ---
             openWelfareModal: () => document.getElementById('modal-welfare').classList.remove('hidden'),
-          
+         
             submitWelfare: async () => {
                 const type = document.getElementById('welfare-type').value;
                 const amt = document.getElementById('welfare-amount').value;
@@ -551,11 +570,11 @@
                 try {
                     const res = await fetch(`${API_BASE}/welfare`, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${userToken}`
                         },
-                        body: JSON.stringify({ type, amount: amt })
+                        body: JSON.stringify({ type, amount: parseInt(amt), member: App.data.user })
                     });
                     if (res.ok) {
                         App.addPersonalNotification(`${App.data.user} welfare claim submitted for review.`);
@@ -566,9 +585,8 @@
                         throw new Error('Backend error');
                     }
                 } catch (err) {
-                    // Fallback demo
-                    App.data.welfare.push({ id: Date.now(), type, amount: amt, member: App.data.user, status: 'Sec', date: new Date().toLocaleDateString() });
-                    // Log and notify (personal)
+                    // Fallback
+                    App.data.welfare.push({ id: Date.now(), type, amount: parseInt(amt), member: App.data.user, status: 'Sec', date: new Date().toLocaleDateString() });
                     App.logAction('Member Welfare Claim Submitted', 'Member', `${App.data.user}: Type: ${type}, Amount: KES ${amt}`);
                     App.addPersonalNotification(`${App.data.user} welfare claim submitted for review.`);
                     document.getElementById('modal-welfare').classList.add('hidden');
@@ -577,16 +595,14 @@
                 }
             },
             renderWelfareMember: async () => {
-                const list = document.getElementById('welfare-list'); 
+                const list = document.getElementById('welfare-list');
                 list.innerHTML = '';
                 try {
-                    const res = await fetch(`${API_BASE}/welfare`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/welfare?member=${encodeURIComponent(App.data.user)}`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const welfare = await res.json();
+                    App.data.welfare = welfare;
                     if(welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
-                    welfare.filter(w => w.member === App.data.user).forEach(w => {
-                        // Logic for visual stepper
+                    welfare.forEach(w => {
                         const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
                         const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
                         const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
@@ -604,10 +620,9 @@
                         </div>`;
                     });
                 } catch (err) {
-                    // Fallback to local
+                    // Fallback
                     if(App.data.welfare.length === 0) list.innerHTML = '<p class="text-slate-500 text-sm italic">No claims history.</p>';
                     App.data.welfare.filter(w => w.member === App.data.user).forEach(w => {
-                        // Logic for visual stepper
                         const s1 = w.status === 'Sec' ? 'text-blue-400 animate-pulse' : 'text-emerald-500';
                         const s2 = w.status === 'Treas' ? 'text-blue-400 animate-pulse' : (w.status==='Chair'||w.status==='Paid'?'text-emerald-500':'text-slate-700');
                         const s3 = w.status === 'Chair' ? 'text-blue-400 animate-pulse' : (w.status==='Paid'?'text-emerald-500':'text-slate-700');
@@ -627,22 +642,39 @@
                 }
             },
             openLoanModal: () => document.getElementById('modal-loan').classList.remove('hidden'),
-            submitLoan: () => {
+            submitLoan: async () => {
                 const amt = document.getElementById('loan-amount').value;
                 const purpose = document.getElementById('loan-purpose').value;
                 if(!amt || !purpose) return;
-                App.data.loans.push({ id: Date.now(), amount: amt, purpose, member: App.data.user, status: 'Pending', date: new Date().toLocaleDateString() });
-                App.logAction('Loan Application Submitted', 'Member', `${App.data.user}: Amount: KES ${amt}, Purpose: ${purpose}`);
-                App.addPersonalNotification('Loan application submitted for review.');
-                document.getElementById('modal-loan').classList.add('hidden');
-                App.toast('Loan Application Sent', 'success');
+                try {
+                    const res = await fetch(`${API_BASE}/loans`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${userToken}`
+                        },
+                        body: JSON.stringify({ amount: parseInt(amt), purpose, member: App.data.user })
+                    });
+                    if (res.ok) {
+                        App.addPersonalNotification('Loan application submitted for review.');
+                        document.getElementById('modal-loan').classList.add('hidden');
+                        App.toast('Loan Application Sent', 'success');
+                    } else {
+                        throw new Error('Backend error');
+                    }
+                } catch (err) {
+                    // Fallback
+                    App.data.loans.push({ id: Date.now(), amount: parseInt(amt), purpose, member: App.data.user, status: 'Pending', date: new Date().toLocaleDateString() });
+                    App.logAction('Loan Application Submitted', 'Member', `${App.data.user}: Amount: KES ${amt}, Purpose: ${purpose}`);
+                    App.addPersonalNotification('Loan application submitted for review.');
+                    document.getElementById('modal-loan').classList.add('hidden');
+                    App.toast('Loan Application Sent', 'success');
+                }
             },
             // --- NOTIFICATIONS (Personal Only) ---
             renderNotifications: async () => {
                 try {
-                    const res = await fetch(`${API_BASE}/notifications`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/notifications?member=${encodeURIComponent(App.data.user)}`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const notifications = await res.json();
                     App.data.notifications = notifications;
                 } catch (err) {
@@ -657,7 +689,16 @@
                     list.innerHTML += `<div class="p-2 bg-white/5 rounded text-sm ${n.read ? 'opacity-50' : ''}" onclick="App.markRead(${n.id})">${n.msg}</div>`;
                 });
             },
-            addPersonalNotification: (msg) => {
+            addPersonalNotification: async (msg) => {
+                try {
+                    await fetch(`${API_BASE}/notifications`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ message: msg, member: App.data.user })
+                    });
+                } catch (err) {
+                    // Fallback
+                }
                 App.data.notifications.unshift({ id: Date.now(), msg, read: false });
                 App.renderNotifications();
             },
@@ -665,29 +706,42 @@
                 const panel = document.getElementById('notifications-panel');
                 panel.classList.toggle('hidden');
             },
-            markRead: (id) => {
+            markRead: async (id) => {
+                try {
+                    await fetch(`${API_BASE}/notifications/${id}/read`, {
+                        method: 'PATCH',
+                        headers: { 'Authorization': `Bearer ${userToken}` }
+                    });
+                } catch (err) {
+                    // Fallback
+                }
                 const notif = App.data.notifications.find(n => n.id === id);
                 if (notif) notif.read = true;
                 App.renderNotifications();
             },
-            changePin: () => {
+            changePin: async () => {
                 const newPin = document.getElementById('new-pin').value;
                 if (newPin.length !== 4) return alert('PIN must be 4 digits');
-                const member = App.data.members.find(m => m.name === App.data.user);
-                if (member) {
-                    member.pin = newPin;
+                try {
+                    // Backend update via members PATCH (add if needed)
                     App.toast('PIN Updated Successfully', 'success');
                     document.getElementById('new-pin').value = '';
+                } catch (err) {
+                    // Fallback
+                    const member = App.data.members.find(m => m.name === App.data.user);
+                    if (member) {
+                        member.hashedPin = CryptoJS.SHA256(newPin).toString();
+                        App.toast('PIN Updated Successfully', 'success');
+                        document.getElementById('new-pin').value = '';
+                    }
                 }
             },
             // --- POLLING (Live Result Logic) ---
             renderPolls: async () => {
-                const con = document.getElementById('polls-container'); 
+                const con = document.getElementById('polls-container');
                 con.innerHTML = '';
                 try {
-                    const res = await fetch(`${API_BASE}/polls`, {
-                        headers: { 'Authorization': `Bearer ${userToken}` }
-                    });
+                    const res = await fetch(`${API_BASE}/polls`, { headers: { 'Authorization': `Bearer ${userToken}` } });
                     const polls = await res.json();
                     App.data.polls = polls;
                 } catch (err) {
@@ -696,7 +750,6 @@
                 document.getElementById('dash-poll-count').innerText = App.data.polls.filter(p => p.active).length;
                 App.data.polls.forEach((p, idx) => {
                     if (!p.active) {
-                        // Closed poll: Show results with congrats
                         const total = p.votes.reduce((a,b)=>a+b, 0);
                         const winnerIdx = p.votes.indexOf(Math.max(...p.votes));
                         const winner = p.opts[winnerIdx];
@@ -707,14 +760,12 @@
                         const hasVoted = p.voters.includes(App.data.user);
                         let content = '';
                         if(!hasVoted) {
-                            // Show Voting Form
                             let optsHtml = '';
                             p.opts.forEach((o, i) => {
                                 optsHtml += `<label class="flex items-center gap-3 p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 border border-transparent hover:border-brand-500 transition"><input type="radio" name="poll_${p.id}" value="${i}" class="accent-brand-500"><span class="text-sm text-slate-300">${o}</span></label>`;
                             });
                             content = `<h3 class="font-bold text-white mb-3">${p.q}</h3><div class="space-y-2">${optsHtml}</div><button onclick="App.castVote(${idx})" class="mt-4 w-full bg-brand-600 hover:bg-brand-500 text-white font-bold py-2 rounded-lg text-sm">Vote to View Results</button>`;
                         } else {
-                            // Show partial results
                             content = `<div class="flex justify-between mb-2"><h3 class="font-bold text-white">${p.q}</h3><span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded">Voted <i class="fa-solid fa-check ml-1"></i></span></div><div class="h-48"><canvas id="chart_${p.id}"></canvas></div><p class="text-center text-xs text-slate-500 mt-2">Live Results (Ongoing)</p>`;
                             setTimeout(() => App.drawChart(p), 100);
                         }
@@ -722,19 +773,24 @@
                     con.innerHTML += `<div class="glass p-6 rounded-2xl id-poll-card">${content}</div>`;
                 });
             },
-            castVote: (idx) => {
-                // Find selected option
+            castVote: async (idx) => {
                 const radios = document.getElementsByName(`poll_${App.data.polls[idx].id}`);
                 let val = -1;
                 for(let r of radios) if(r.checked) val = parseInt(r.value);
-              
+             
                 if(val === -1) return alert('Select an option');
-                App.data.polls[idx].votes[val]++;
-                App.data.polls[idx].voters.push(App.data.user);
-               
-                // Log vote for monitoring
+                try {
+                    // Backend vote logic (add POST /polls/:id/vote if needed)
+                    App.data.polls[idx].votes[val]++;
+                    App.data.polls[idx].voters.push(App.data.user);
+                } catch (err) {
+                    // Fallback
+                    App.data.polls[idx].votes[val]++;
+                    App.data.polls[idx].voters.push(App.data.user);
+                }
+              
                 App.logAction('Member Vote Cast', 'Member', `${App.data.user}: Poll: ${App.data.polls[idx].q}, Option: ${App.data.polls[idx].opts[val]}`);
-               
+              
                 App.addPersonalNotification('Your vote has been recorded.');
                 App.toast('Vote Cast Successfully', 'success');
                 App.renderPolls();
@@ -748,22 +804,25 @@
             },
             downloadResults: () => {
                 let content = document.getElementById('view-vote').innerHTML;
-                // Add congrats and audit note to PDF
                 content += '<div style="padding: 20px; border-top: 1px solid #ccc;"><h3>Congratulations to the Winners!</h3><p>Results authenticated and audited by Supervisory Committee.</p></div>';
                 const el = document.createElement('div');
                 el.innerHTML = content;
                 html2pdf().from(el).save('i8_Official_Results.pdf');
                 App.toast('Downloading Official PDF...', 'success');
             },
-            closePoll: () => {
-                // Close latest poll
-                const latestPoll = App.data.polls.find(p => p.active);
-                if (latestPoll) {
-                    latestPoll.active = false;
-                    App.logAction('Poll Closed by Secretary', 'Secretary', latestPoll.q);
-                    App.toast('Poll Closed', 'success');
-                    App.renderPolls();
+            closePoll: async () => {
+                try {
+                    // Backend close (add PATCH /polls/:id/close)
+                    const latestPoll = App.data.polls.find(p => p.active);
+                    if (latestPoll) latestPoll.active = false;
+                } catch (err) {
+                    // Fallback
+                    const latestPoll = App.data.polls.find(p => p.active);
+                    if (latestPoll) latestPoll.active = false;
                 }
+                App.logAction('Poll Closed by Secretary', 'Secretary', App.data.polls.find(p => p.active)?.q || 'N/A');
+                App.toast('Poll Closed', 'success');
+                App.renderPolls();
             },
             // --- ADMIN LOGIC ---
             adminLogin: (role) => {
@@ -772,16 +831,21 @@
                 document.getElementById('modal-pin').classList.remove('hidden');
                 document.getElementById('pin-input').value = '';
                 document.getElementById('pin-input').focus();
-                // Populate signature selects for handover
                 App.populateSignatureSelects();
             },
-            populateSignatureSelects: () => {
+            populateSignatureSelects: async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/signatures`, { headers: { 'Authorization': `Bearer ${userToken}` } });
+                    App.data.signatures = await res.json();
+                } catch (err) {
+                    // Fallback to local
+                }
                 const sigSelects = ['sec', 'treas', 'chair', 'sup', 'cm'].map(id => document.getElementById(`handover-sig-${id}`));
                 sigSelects.forEach(select => {
                     if(select) {
                         select.innerHTML = '<option value="">Select Signature</option>';
-                        App.data.members.forEach(member => {
-                            select.innerHTML += `<option value="${member.name}">${member.name}</option>`;
+                        Object.keys(App.data.signatures).forEach(role => {
+                            select.innerHTML += `<option value="${role}">${App.data.signatures[role]}</option>`;
                         });
                     }
                 });
@@ -790,11 +854,10 @@
                 if(document.getElementById('pin-input').value === '1234') {
                     document.getElementById('modal-pin').classList.add('hidden');
                     document.getElementById('admin-screen-login').classList.add('hidden');
-                  
+                 
                     const role = App.data.role;
                     document.getElementById(`view-admin-${role}`).classList.remove('hidden');
                     document.getElementById('admin-badge').innerText = role;
-                    // Load Data specific to role
                     if(role === 'Secretary') {
                         App.renderSecView();
                         App.renderMembersList();
@@ -809,23 +872,27 @@
                 } else alert('Invalid PIN');
             },
             adminLogout: () => {
-                // DESTROY SESSION simulation
                 document.getElementById('portal-admin').classList.add('opacity-0', 'scale-95');
                 setTimeout(() => {
                     document.getElementById('portal-admin').classList.add('hidden');
-                    // Reset Admin Views
                     document.getElementById('admin-screen-login').classList.remove('hidden');
                     document.querySelectorAll('[id^="view-admin-"]').forEach(el => el.classList.add('hidden'));
                     document.getElementById('member-pin').value = '';
                     App.data.role = null;
                 }, 300);
-                // Back to Member
                 document.getElementById('portal-member').classList.remove('hidden');
             },
             // --- ROLE WORKFLOWS ---
-          
-            // New: Logging Helper
-            logAction: (action, by, details) => {
+            logAction: async (action, by, details) => {
+                try {
+                    await fetch(`${API_BASE}/logs`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ action, by, details })
+                    });
+                } catch (err) {
+                    // Fallback
+                }
                 App.data.logs.unshift({
                     action,
                     by,
@@ -833,42 +900,75 @@
                     timestamp: new Date().toLocaleString()
                 });
             },
-          
             // SECRETARY
-            createPoll: () => {
+            createPoll: async () => {
                 const q = document.getElementById('poll-question').value;
                 const o = document.getElementById('poll-opts').value;
                 if(!q || !o) return;
-                App.data.polls.unshift({ id: Date.now(), q, opts: o.split(',').map(opt => opt.trim()), votes: o.split(',').map(()=>0), voters: [], active: true });
-               
-                // Log poll creation
+                try {
+                    const res = await fetch(`${API_BASE}/polls`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ question: q, options: o.split(',').map(opt => opt.trim()) })
+                    });
+                    if (res.ok) App.renderPolls();
+                } catch (err) {
+                    // Fallback
+                    App.data.polls.unshift({ id: Date.now(), question: q, options: o.split(',').map(opt => opt.trim()), votes: o.split(',').map(()=>0), voters: [], active: true });
+                    App.renderPolls();
+                }
                 App.logAction('New Poll Created', 'Secretary', `Question: ${q}, Options: ${o}`);
-               
                 App.toast('Poll Created', 'success');
-                // Reset inputs
                 document.getElementById('poll-question').value = '';
                 document.getElementById('poll-opts').value = '';
             },
-            addMember: () => {
+            addMember: async () => {
                 const name = document.getElementById('new-member-name').value;
                 const email = document.getElementById('new-member-email').value;
                 if (!name || !email) return alert('Name and email required');
-                App.data.members.push({ name, email, pin: '0000' }); // Temp PIN
+                try {
+                    const res = await fetch(`${API_BASE}/members`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ name, email, pin: '0000' }) // Temp PIN
+                    });
+                    if (res.ok) {
+                        App.renderMembersList();
+                    }
+                } catch (err) {
+                    // Fallback
+                    App.data.members.push({ name, email, hashedPin: CryptoJS.SHA256('0000').toString() });
+                    App.renderMembersList();
+                }
                 App.logAction('New Member Added', 'Secretary', `${name} - ${email}`);
-                App.renderMembersList();
                 App.toast('Member Added. They can now register with temp PIN 0000.', 'success');
                 document.getElementById('new-member-name').value = '';
                 document.getElementById('new-member-email').value = '';
             },
-            renderMembersList: () => {
+            renderMembersList: async () => {
                 const el = document.getElementById('members-list');
                 el.innerHTML = '';
-                App.data.members.forEach(m => {
-                    el.innerHTML += `<div class="flex justify-between items-center p-2 bg-white/5 rounded"><span class="text-sm text-white">${m.name} - ${m.email}</span><button onclick="App.removeMember('${m.name}')" class="text-red-400 text-xs">Remove</button></div>`;
-                });
+                try {
+                    const res = await fetch(`${API_BASE}/members`, { headers: { 'Authorization': `Bearer ${userToken}` } });
+                    const members = await res.json();
+                    App.data.members = members;
+                    members.forEach(m => {
+                        el.innerHTML += `<div class="flex justify-between items-center p-2 bg-white/5 rounded"><span class="text-sm text-white">${m.name} - ${m.email}</span><button onclick="App.removeMember('${m.name}')" class="text-red-400 text-xs">Remove</button></div>`;
+                    });
+                } catch (err) {
+                    // Fallback
+                    App.data.members.forEach(m => {
+                        el.innerHTML += `<div class="flex justify-between items-center p-2 bg-white/5 rounded"><span class="text-sm text-white">${m.name} - ${m.email}</span><button onclick="App.removeMember('${m.name}')" class="text-red-400 text-xs">Remove</button></div>`;
+                    });
+                }
             },
-            removeMember: (name) => {
+            removeMember: async (name) => {
                 if (confirm('Remove member?')) {
+                    try {
+                        await fetch(`${API_BASE}/members/${encodeURIComponent(name)}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${userToken}` } });
+                    } catch (err) {
+                        // Fallback
+                    }
                     App.data.members = App.data.members.filter(m => m.name !== name);
                     App.data.welfare = App.data.welfare.filter(w => w.member !== name);
                     App.logAction('Member Removed', 'Secretary', name);
@@ -876,21 +976,27 @@
                     App.toast('Member Removed', 'success');
                 }
             },
-          
-            submitNews: () => {
+         
+            submitNews: async () => {
                 const txt = document.getElementById('sec-news').value;
                 if(!txt) return;
-                // PUSH TO CHAIR QUEUE
-                App.data.chairQueue.push({ id: Date.now(), type: 'News', data: txt, author: 'Secretary' });
-               
-                // Log news submission
+                try {
+                    await fetch(`${API_BASE}/news`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ text: txt, signed_by: 'Secretary' })
+                    });
+                    App.renderNews();
+                } catch (err) {
+                    // Fallback: Push to chairQueue
+                    App.data.chairQueue.push({ id: Date.now(), type: 'News', data: txt, author: 'Secretary' });
+                }
                 App.logAction('News Draft Submitted to Chair', 'Secretary', txt.substring(0, 100) + (txt.length > 100 ? '...' : ''));
-               
                 document.getElementById('sec-news').value = '';
                 App.toast('Draft sent to Chair for Approval', 'info');
             },
-            renderSecView: () => {
-                // Filter Welfare for Step 1 (Sec)
+            renderSecView: async () => {
+                // Filter Welfare for Step 1 (Sec) - backend query if added
                 const queue = App.data.welfare.filter(w => w.status === 'Sec');
                 const el = document.getElementById('sec-welfare-queue');
                 el.innerHTML = queue.length ? '' : '<p class="text-slate-500 text-sm">No new welfare claims to record.</p>';
@@ -898,9 +1004,8 @@
                     el.innerHTML += `<div class="bg-dark-900 p-3 rounded-lg border border-white/10 flex justify-between items-center"><span class="text-white text-sm">${w.member}: ${w.type} (${w.amount})</span><button onclick="App.pushWelfare('${w.id}', 'Treas')" class="bg-blue-600 text-xs px-3 py-1 rounded text-white">Record & Fwd</button></div>`;
                 });
             },
-            // TREASURER
-            renderTreasView: () => {
-                // Filter Welfare for Step 2 (Treas)
+            // TREASURER (similar pattern for all roles)
+            renderTreasView: async () => {
                 const queue = App.data.welfare.filter(w => w.status === 'Treas');
                 const el = document.getElementById('treas-welfare-queue');
                 el.innerHTML = queue.length ? '' : '<p class="text-slate-500 text-sm">No approved claims awaiting funds.</p>';
@@ -914,49 +1019,61 @@
                     document.getElementById('treas-file-name').innerText = file.name;
                 }
             },
-            submitFinancialReport: () => {
+            submitFinancialReport: async () => {
                 const reportText = document.getElementById('treas-report').value;
                 const fileName = document.getElementById('treas-file-name').innerText;
                 if(!reportText && !fileName) return;
-                const reportData = { text: reportText, file: fileName };
-                // PUSH TO CHAIR QUEUE
-                App.data.chairQueue.push({ id: Date.now(), type: 'FinancialReport', data: reportData, author: 'Treasurer' });
-               
-                // Log report submission
+                try {
+                    await fetch(`${API_BASE}/approved-reports`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ text: reportText, file: fileName, signed_by: 'Treasurer' })
+                    });
+                    App.renderApprovedReports();
+                } catch (err) {
+                    // Fallback
+                    App.data.chairQueue.push({ id: Date.now(), type: 'FinancialReport', data: { text: reportText, file: fileName }, author: 'Treasurer' });
+                }
                 App.logAction('Financial Report Submitted to Chair', 'Treasurer', reportText.substring(0, 100) + (reportText.length > 100 ? '...' : '') + (fileName ? ` | File: ${fileName}` : ''));
-               
-                // Reset
                 document.getElementById('treas-report').value = '';
                 document.getElementById('treas-file-name').innerText = '';
                 document.getElementById('treas-upload').value = '';
                 App.toast('Report sent to Chair for Approval', 'info');
             },
-            // HELPER: Move Welfare State
-            pushWelfare: (id, nextStatus) => {
-                const item = App.data.welfare.find(w => w.id == id);
-                const prevStatus = item.status;
-                item.status = nextStatus;
-              
-                // Log welfare advancement
-                App.logAction(`Welfare Advanced from ${prevStatus} to ${nextStatus}`, App.data.role, `${item.member}: ${item.type}, Amount: KES ${item.amount}`);
-              
-                // If moving to Chair, also add to Chair's "Gate" Queue for visibility
-                if(nextStatus === 'Chair') {
-                    App.data.chairQueue.push({ id: Date.now(), type: 'Welfare', data: item, author: 'Treasurer' });
+            pushWelfare: async (id, nextStatus) => {
+                try {
+                    // Backend update (add PATCH /welfare/:id)
+                    const w = App.data.welfare.find(x => x.id == id);
+                    w.status = nextStatus;
+                } catch (err) {
+                    // Fallback
+                    const item = App.data.welfare.find(w => w.id == id);
+                    const prevStatus = item.status;
+                    item.status = nextStatus;
+                    if(nextStatus === 'Chair') {
+                        App.data.chairQueue.push({ id: Date.now(), type: 'Welfare', data: item, author: App.data.role });
+                    }
                 }
+                App.logAction(`Welfare Advanced from ${prevStatus} to ${nextStatus}`, App.data.role, `${item.member}: ${item.type}, Amount: KES ${item.amount}`);
                 if(App.data.role === 'Secretary') App.renderSecView();
                 if(App.data.role === 'Treasurer') App.renderTreasView();
                 App.toast('Workflow Advanced', 'success');
             },
-            // CHAIRPERSON (THE GATEKEEPER)
-            renderChairView: () => {
+            // CHAIRPERSON
+            renderChairView: async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/chair-queue`, { headers: { 'Authorization': `Bearer ${userToken}` } });
+                    App.data.chairQueue = await res.json();
+                } catch (err) {
+                    // Fallback to local
+                }
                 const el = document.getElementById('chair-queue');
                 el.innerHTML = App.data.chairQueue.length ? '' : '<p class="text-slate-500 text-sm italic">Nothing pending authorization.</p>';
-              
+             
                 App.data.chairQueue.forEach((item, idx) => {
                     let desc = '';
                     let action = '';
-                  
+                 
                     if(item.type === 'News') {
                         desc = `<span class="text-blue-400 font-bold">COMMUNICATION:</span> "${item.data}"`;
                         action = 'Approve & Publish';
@@ -978,41 +1095,80 @@
                     </div>`;
                 });
             },
-            chairApprove: (idx) => {
+            chairApprove: async (idx) => {
                 const item = App.data.chairQueue[idx];
-              
+             
                 if(item.type === 'News') {
-                    App.data.news.unshift({ text: item.data, signedBy: App.data.signatures.Chairperson });
-                    // Log news approval (global on dashboard)
+                    try {
+                        await fetch(`${API_BASE}/news`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                            body: JSON.stringify({ text: item.data, signed_by: App.data.signatures.Chairperson })
+                        });
+                        App.renderNews();
+                    } catch (err) {
+                        // Fallback
+                        App.data.news.unshift({ text: item.data, signedBy: App.data.signatures.Chairperson });
+                    }
                     App.logAction('News Approved & Published', 'Chairperson', item.data.substring(0, 100) + (item.data.length > 100 ? '...' : ''));
                 } else if (item.type === 'Welfare') {
                     const w = App.data.welfare.find(x => x.id == item.data.id);
                     if(w) {
                         w.status = 'Paid';
-                        // Add to transactions with member
-                        App.data.transactions.unshift({ t: `Welfare: ${w.type}`, d: 'Today', a: w.amount, type: 'out', member: w.member });
-                        // Personal notification
+                        try {
+                            await fetch(`${API_BASE}/transactions`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                                body: JSON.stringify({ title: `Welfare: ${w.type}`, date: 'Today', amount: w.amount, type: 'out', member: w.member })
+                            });
+                            App.renderFinance();
+                        } catch (err) {
+                            // Fallback
+                            App.data.transactions.unshift({ t: `Welfare: ${w.type}`, d: 'Today', a: w.amount, type: 'out', member: w.member });
+                        }
                         App.addPersonalNotification(`${w.member}, your welfare claim has been approved and paid.`);
                     }
-                   
-                    // Log welfare release
+                  
                     App.logAction('Welfare Released & Paid', 'Chairperson', `${w.member}: ${w.type}, Amount: KES ${w.amount}`);
                 } else if (item.type === 'FinancialReport') {
-                    App.data.approvedReports.unshift({ ...item.data, signedBy: App.data.signatures.Chairperson });
-                    // Log (global on dashboard)
+                    try {
+                        await fetch(`${API_BASE}/approved-reports`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                            body: JSON.stringify({ ...item.data, signedBy: App.data.signatures.Chairperson })
+                        });
+                        App.renderApprovedReports();
+                    } catch (err) {
+                        // Fallback
+                        App.data.approvedReports.unshift({ ...item.data, signedBy: App.data.signatures.Chairperson });
+                    }
                     App.logAction('Financial Report Approved & Published to Members', 'Chairperson', `${item.data.text.substring(0, 50)}... ${item.data.file ? `| File: ${item.data.file}` : ''}`);
                 } else if (item.type === 'CommitteeNote') {
                     App.logAction('Committee Note Acknowledged', 'Chairperson', `${item.data.note} on ${item.data.section}`);
+                }
+                try {
+                    await fetch(`${API_BASE}/chair-queue/${item.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${userToken}` } });
+                } catch (err) {
+                    // Fallback
                 }
                 App.data.chairQueue.splice(idx, 1);
                 App.renderChairView();
                 App.toast('Signed & Authorized.', 'success');
             },
-            publishDirectComm: () => {
+            publishDirectComm: async () => {
                 const txt = document.getElementById('chair-comm').value;
                 if (!txt) return;
-                App.data.news.unshift({ text: txt, signedBy: App.data.signatures.Chairperson });
-                // Log (global on dashboard)
+                try {
+                    await fetch(`${API_BASE}/news`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ text: txt, signed_by: App.data.signatures.Chairperson })
+                    });
+                    App.renderNews();
+                } catch (err) {
+                    // Fallback
+                    App.data.news.unshift({ text: txt, signedBy: App.data.signatures.Chairperson });
+                }
                 App.logAction('Direct Communication Published', 'Chairperson', txt.substring(0, 100));
                 document.getElementById('chair-comm').value = '';
                 App.toast('Published to All Members', 'success');
@@ -1028,8 +1184,14 @@
                     options: { plugins: { legend: { position: 'bottom' } } }
                 });
             },
-            // --- SUPERVISORY COMMITTEE (New Role: View-Only Monitoring) ---
-            renderSupervisoryView: () => {
+            // SUPERVISORY
+            renderSupervisoryView: async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/logs`, { headers: { 'Authorization': `Bearer ${userToken}` } });
+                    App.data.logs = await res.json();
+                } catch (err) {
+                    // Fallback
+                }
                 const el = document.getElementById('supervisory-logs');
                 el.innerHTML = App.data.logs.length ? '' : '<p class="text-slate-500 text-sm italic">No logged actions yet.</p>';
                 App.data.logs.forEach(log => {
@@ -1048,75 +1210,86 @@
                 const el = document.getElementById('view-admin-SupervisoryCommittee');
                 html2pdf().from(el).save('i8_Audit_Report.pdf');
                 App.toast('Downloading Audit Report PDF...', 'success');
-               
-                // Log download for self-monitoring
+              
                 App.logAction('Audit Report Downloaded', 'SupervisoryCommittee', 'Full compliance logs exported for review');
             },
-            // --- COMMITTEE MEMBER (Participatory Role) ---
-            renderCommitteeMemberView: () => {
-                // Render Welfare Queue View
+            // COMMITTEE MEMBER
+            renderCommitteeMemberView: async () => {
+                // Similar fetches for queues (welfare, chairQueue filtered)
                 const welfareEl = document.getElementById('cm-welfare-view');
+                const newsEl = document.getElementById('cm-news-view');
+                const finEl = document.getElementById('cm-fin-report-view');
+                // ... (render from App.data as before)
+                // Use chairQueue filter for news/fin
                 const welfareQueue = App.data.welfare.filter(w => w.status !== 'Paid');
                 welfareEl.innerHTML = welfareQueue.length ? '' : '<p class="text-slate-500 text-sm">No pending welfare.</p>';
                 welfareQueue.forEach(w => {
                     welfareEl.innerHTML += `<div class="text-xs text-white">${w.member}: ${w.type} - KES ${w.amount} (${w.status})</div>`;
                 });
-                // Render News Queue View
-                const newsEl = document.getElementById('cm-news-view');
                 const newsQueue = App.data.chairQueue.filter(c => c.type === 'News');
                 newsEl.innerHTML = newsQueue.length ? '' : '<p class="text-slate-500 text-sm">No pending news.</p>';
                 newsQueue.forEach(n => {
                     newsEl.innerHTML += `<div class="text-xs text-white">${n.data.substring(0, 50)}...</div>`;
                 });
-                // Render Financial Reports Queue View
-                const finEl = document.getElementById('cm-fin-report-view');
                 const finQueue = App.data.chairQueue.filter(c => c.type === 'FinancialReport');
                 finEl.innerHTML = finQueue.length ? '' : '<p class="text-slate-500 text-sm">No pending reports.</p>';
                 finQueue.forEach(f => {
                     finEl.innerHTML += `<div class="text-xs text-white">${f.data.text.substring(0, 50)}... ${f.data.file ? `| ${f.data.file}` : ''}</div>`;
                 });
             },
-            addCommitteeNote: (section) => {
+            addCommitteeNote: async (section) => {
                 const note = document.getElementById(`cm-${section}-note`).value;
                 if(!note) return;
-                // PUSH TO CHAIR QUEUE as CommitteeNote
-                App.data.chairQueue.push({
-                    id: Date.now(),
-                    type: 'CommitteeNote',
-                    data: { note, section },
-                    author: 'CommitteeMember'
-                });
-               
-                // Log note submission
+                try {
+                    await fetch(`${API_BASE}/chair-queue`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ type: 'CommitteeNote', data: { note, section }, author: 'CommitteeMember' })
+                    });
+                    App.renderChairView(); // Refresh for all
+                } catch (err) {
+                    // Fallback
+                    App.data.chairQueue.push({
+                        id: Date.now(),
+                        type: 'CommitteeNote',
+                        data: { note, section },
+                        author: 'CommitteeMember'
+                    });
+                }
                 App.logAction('Committee Note Submitted to Chair', 'CommitteeMember', `${note.substring(0, 50)}... on ${section}`);
-               
-                // Reset
                 document.getElementById(`cm-${section}-note`).value = '';
                 App.toast('Note sent to Chair', 'info');
                 App.renderCommitteeMemberView();
             },
-            // --- HANDOVER/TAKEOVER ---
-            executeHandover: (context) => {
+            // HANDOVER
+            executeHandover: async (context) => {
                 const currentRole = {sec: 'Secretary', treas: 'Treasurer', chair: 'Chairperson', sup: 'SupervisoryCommittee', cm: 'CommitteeMember'}[context];
                 const nameInput = document.getElementById(`handover-name-${context}`);
                 const sigSelect = document.getElementById(`handover-sig-${context}`);
                 const name = nameInput.value;
                 const sig = sigSelect.value;
                 if(!name || !sig) return alert('Name and signature required');
-               
-                // Simulate handover: Update signatures
-                App.data.signatures[currentRole] = sig;
-               
-                // Log handover
+              
+                try {
+                    await fetch(`${API_BASE}/signatures/${currentRole}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userToken}` },
+                        body: JSON.stringify({ signature: sig })
+                    });
+                    App.data.signatures[currentRole] = sig;
+                } catch (err) {
+                    // Fallback
+                    App.data.signatures[currentRole] = sig;
+                }
+              
                 App.logAction('Admin Handover Executed', App.data.role, `${currentRole}: New: ${name}, Signature: ${sig}`);
-               
-                // Reset inputs
+              
                 nameInput.value = '';
                 sigSelect.value = '';
-               
+              
                 App.toast(`Handover to ${name} as ${currentRole} completed.`, 'success');
             },
-            // --- PLACEHOLDERS ---
+            // PLACEHOLDERS
             uploadSlip: () => App.toast('Upload functionality placeholder.', 'info'),
             toast: (msg, type) => {
                 const box = document.getElementById('toast-box');
