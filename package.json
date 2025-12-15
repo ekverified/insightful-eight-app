@@ -1,0 +1,12 @@
+{
+  "name": "i8-frontend",
+  "version": "1.0.0",
+  "description": "Insightful Eight Ltd Portal Frontend",
+  "scripts": {
+    "start": "npx serve . -p 3000",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
