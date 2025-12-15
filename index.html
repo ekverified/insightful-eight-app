@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Insightful Eight Ltd | v1.0.0</title>
- 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -73,7 +72,7 @@
     </div>
     <div id="toast-box" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 w-full max-w-sm px-4 pointer-events-none"></div>
     <div id="portal-member" class="hidden flex w-full h-full transition-all duration-500 transform scale-100 opacity-100 origin-center">
-     
+    
         <aside class="hidden md:flex flex-col w-72 bg-dark-950/50 backdrop-blur-xl border-r border-dark-800 z-20">
             <div class="h-24 flex items-center px-8 border-b border-white/5">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-bold text-xl mr-3 shadow-lg shadow-brand-500/20">i8</div>
@@ -96,7 +95,7 @@
                 <button onclick="App.switchContext('admin')" class="ml-auto text-amber-500 text-xs font-bold uppercase border border-amber-500/30 px-3 py-1.5 rounded-lg active:bg-amber-500/10">Admin</button>
             </header>
             <div id="member-view-container" class="flex-1 overflow-y-auto hide-scroll p-5 pb-32 md:p-10">
-             
+            
                 <section id="view-dashboard" class="space-y-8 animate-slide-up max-w-6xl mx-auto">
                     <div class="flex justify-between items-end">
                         <div><h2 class="text-3xl font-bold text-white tracking-tight">Insightful Eight Ltd</h2><p class="text-sm text-slate-400 mt-1">Welcome back, <span id="welcome-user"></span>.</p></div>
@@ -106,7 +105,7 @@
                         <h4 class="font-bold text-white">Personal Notifications</h4>
                         <div id="notif-list"></div>
                     </div>
-                 
+                
                     <div class="glass p-6 rounded-2xl border-l-4 border-l-brand-500">
                         <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-400"></i> Official Communications</h3><span class="text-[10px] text-slate-500">Verified by Chair</span></div>
                         <div id="member-news-feed" class="space-y-4"></div>
@@ -137,7 +136,7 @@
                         <h2 class="text-2xl font-bold text-white">Welfare Support</h2>
                         <button onclick="App.openWelfareModal()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg shadow-pink-500/20"><i class="fa-solid fa-heart-pulse mr-2"></i>Claim Support</button>
                     </div>
-                 
+                
                     <div class="glass p-6 rounded-2xl border border-pink-500/20">
                         <p class="text-sm text-slate-400 mb-6">Welfare is support, not a loan. All claims undergo the 3-Step Verification process.</p>
                         <div id="welfare-list" class="space-y-4">
@@ -195,7 +194,7 @@
             <button onclick="App.adminLogout()" class="text-xs font-bold text-red-400 hover:text-red-300 uppercase border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500/10 transition"><i class="fa-solid fa-power-off mr-1"></i> Secure Exit</button>
         </header>
         <main class="flex-1 relative overflow-hidden bg-gradient-to-br from-dark-950 via-[#0f1221] to-dark-950 p-6 md:p-10 overflow-y-auto">
-         
+        
             <div id="admin-screen-login" class="flex flex-col items-center justify-center h-full">
                 <h2 class="text-2xl font-bold text-white mb-8">Select Role</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
@@ -296,7 +295,7 @@
                     <div class="absolute -right-4 -top-4 text-purple-500/10 text-9xl"><i class="fa-solid fa-stamp"></i></div>
                     <h3 class="font-bold text-white text-xl mb-1">The Chairman's Gate</h3>
                     <p class="text-sm text-purple-300 mb-6">Review, Authenticate & Sign off on pending items.</p>
-                 
+                
                     <div id="chair-queue" class="space-y-3 relative z-10"></div>
                 </div>
                 <div class="glass p-6 rounded-2xl">
@@ -360,7 +359,7 @@
     </div>
     <div id="modal-pin" class="hidden absolute inset-0 z-[70] bg-dark-950/90 backdrop-blur flex items-center justify-center"><div class="glass p-8 rounded-2xl w-full max-w-xs text-center"><h3 id="pin-title" class="text-xl font-bold text-white mb-2">Enter PIN</h3><input type="password" id="pin-input" maxlength="4" class="bg-dark-900 border border-white/10 rounded-xl text-center text-2xl tracking-[1em] text-white p-3 w-full outline-none focus:border-brand-500 transition mb-4"><button onclick="App.verifyPin()" class="w-full bg-brand-600 text-white font-bold py-3 rounded-xl hover:bg-brand-500">Unlock Console</button><button onclick="document.getElementById('modal-pin').classList.add('hidden')" class="mt-4 text-xs text-slate-500 hover:text-white">Cancel</button></div></div>
     <script>
-        const API_BASE = 'https://your-app.onrender.com'; // Replace with your Render domain (e.g., https://i8-backend.onrender.com)
+        const API_BASE = 'https://app-backend-xil0.onrender.com'; // Updated to your deployed backend
         let userToken = localStorage.getItem('token') || '';
         const CryptoJS = { // Inline fallback for hashing (no backend dep needed)
             SHA256: (str) => btoa(unescape(encodeURIComponent(str))).slice(0, 64) // Simple hash sim for demo
@@ -469,7 +468,7 @@
                 target.classList.remove('animate-slide-up');
                 void target.offsetWidth;
                 target.classList.add('animate-slide-up');
-             
+            
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 document.getElementById(`nav-${view}`).classList.add('active');
                 document.getElementById('header-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
@@ -562,7 +561,7 @@
             },
             // --- WELFARE SYSTEM (3-TIER) ---
             openWelfareModal: () => document.getElementById('modal-welfare').classList.remove('hidden'),
-         
+        
             submitWelfare: async () => {
                 const type = document.getElementById('welfare-type').value;
                 const amt = document.getElementById('welfare-amount').value;
@@ -777,7 +776,7 @@
                 const radios = document.getElementsByName(`poll_${App.data.polls[idx].id}`);
                 let val = -1;
                 for(let r of radios) if(r.checked) val = parseInt(r.value);
-             
+            
                 if(val === -1) return alert('Select an option');
                 try {
                     // Backend vote logic (add POST /polls/:id/vote if needed)
@@ -788,9 +787,9 @@
                     App.data.polls[idx].votes[val]++;
                     App.data.polls[idx].voters.push(App.data.user);
                 }
-              
+             
                 App.logAction('Member Vote Cast', 'Member', `${App.data.user}: Poll: ${App.data.polls[idx].q}, Option: ${App.data.polls[idx].opts[val]}`);
-              
+             
                 App.addPersonalNotification('Your vote has been recorded.');
                 App.toast('Vote Cast Successfully', 'success');
                 App.renderPolls();
@@ -854,7 +853,7 @@
                 if(document.getElementById('pin-input').value === '1234') {
                     document.getElementById('modal-pin').classList.add('hidden');
                     document.getElementById('admin-screen-login').classList.add('hidden');
-                 
+                
                     const role = App.data.role;
                     document.getElementById(`view-admin-${role}`).classList.remove('hidden');
                     document.getElementById('admin-badge').innerText = role;
@@ -976,7 +975,7 @@
                     App.toast('Member Removed', 'success');
                 }
             },
-         
+        
             submitNews: async () => {
                 const txt = document.getElementById('sec-news').value;
                 if(!txt) return;
@@ -1069,11 +1068,11 @@
                 }
                 const el = document.getElementById('chair-queue');
                 el.innerHTML = App.data.chairQueue.length ? '' : '<p class="text-slate-500 text-sm italic">Nothing pending authorization.</p>';
-             
+            
                 App.data.chairQueue.forEach((item, idx) => {
                     let desc = '';
                     let action = '';
-                 
+                
                     if(item.type === 'News') {
                         desc = `<span class="text-blue-400 font-bold">COMMUNICATION:</span> "${item.data}"`;
                         action = 'Approve & Publish';
@@ -1097,7 +1096,7 @@
             },
             chairApprove: async (idx) => {
                 const item = App.data.chairQueue[idx];
-             
+            
                 if(item.type === 'News') {
                     try {
                         await fetch(`${API_BASE}/news`, {
@@ -1128,7 +1127,7 @@
                         }
                         App.addPersonalNotification(`${w.member}, your welfare claim has been approved and paid.`);
                     }
-                  
+                 
                     App.logAction('Welfare Released & Paid', 'Chairperson', `${w.member}: ${w.type}, Amount: KES ${w.amount}`);
                 } else if (item.type === 'FinancialReport') {
                     try {
@@ -1210,7 +1209,7 @@
                 const el = document.getElementById('view-admin-SupervisoryCommittee');
                 html2pdf().from(el).save('i8_Audit_Report.pdf');
                 App.toast('Downloading Audit Report PDF...', 'success');
-              
+             
                 App.logAction('Audit Report Downloaded', 'SupervisoryCommittee', 'Full compliance logs exported for review');
             },
             // COMMITTEE MEMBER
@@ -1269,7 +1268,7 @@
                 const name = nameInput.value;
                 const sig = sigSelect.value;
                 if(!name || !sig) return alert('Name and signature required');
-              
+             
                 try {
                     await fetch(`${API_BASE}/signatures/${currentRole}`, {
                         method: 'PATCH',
@@ -1281,12 +1280,12 @@
                     // Fallback
                     App.data.signatures[currentRole] = sig;
                 }
-              
+             
                 App.logAction('Admin Handover Executed', App.data.role, `${currentRole}: New: ${name}, Signature: ${sig}`);
-              
+             
                 nameInput.value = '';
                 sigSelect.value = '';
-              
+             
                 App.toast(`Handover to ${name} as ${currentRole} completed.`, 'success');
             },
             // PLACEHOLDERS
