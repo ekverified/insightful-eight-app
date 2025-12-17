@@ -28,7 +28,7 @@
       toast.className = `p-3 rounded-lg fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] ${type === 'error' ? 'bg-red-500/20 border-red-500/30 text-red-300' : type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-300' : 'bg-blue-500/20 border-blue-500/30 text-blue-300'} border animate-fade-in max-w-sm w-full px-4 pointer-events-auto`;
       toast.innerHTML = `${msg} <button onclick="this.parentElement.remove()" class="float-right text-xs">&times;</button>`;
       toast.setAttribute('role', 'alert');
-      document.body.appendChild(toast); // Append to body for better positioning
+      document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 5000);
     },
     fetchWithAuth: async (endpoint, options = {}) => {
@@ -40,7 +40,7 @@
           const contentType = res.headers.get('content-type');
           const errText = await res.text();
           if (!contentType || !contentType.includes('application/json')) {
-            // Handle non-JSON responses (e.g., SW offline fallback text)
+            // Handle non-JSON (e.g., SW offline text or 503)
             throw new Error(`Server error: ${res.status} - ${errText.substring(0,100)} (Check connection)`);
           }
           try {
@@ -56,12 +56,11 @@
         throw err;
       }
     },
-    // PWA Install Prompt
+    // ... (rest of your script unchanged – it's already complete and works)
     initPWA: () => {
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        // Show prompt after login (delay 5s)
         setTimeout(() => {
           if (deferredPrompt && document.getElementById('portal-member').classList.contains('hidden') === false) {
             const promptToast = document.createElement('div');
@@ -84,6 +83,8 @@
       const email = document.getElementById('login-email').value.trim();
       const pin = document.getElementById('member-pin').value;
       if (!email || !pin || pin.length !== 4 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return App.toast('Valid email and 4-digit PIN required', 'error');
+      // Offline check before fetch
+      if (!navigator.onLine) return App.toast('Offline - Please connect to internet', 'error');
       App.showSpinner('login-spinner');
       try {
         const data = await App.fetchWithAuth('/auth', { method: 'POST', body: JSON.stringify({ email, pin }) });
@@ -114,6 +115,7 @@
         document.getElementById('member-pin').value = '';
       }
     },
+    // ... (all other methods unchanged – copy from your original for brevity)
     resetPin: async () => {
       const email = document.getElementById('login-email').value.trim();
       if (!email) return App.toast('Enter email first', 'error');
@@ -364,7 +366,6 @@
       const sig = document.getElementById(`handover-sig-${role}`).value;
       if (!name || !sig) return App.toast('Name and signature required', 'error');
       try {
-        // Assume endpoint /handover
         await App.fetchWithAuth('/handover', { method: 'POST', body: JSON.stringify({ role, name, signature: sig }) });
         App.toast('Handover executed', 'success');
       } catch {}
@@ -378,7 +379,6 @@
     },
     renderTreasurerDash: async () => {
       await App.renderPendingLoans();
-      // Load welfare queue for funding
       try {
         const welfare = await App.fetchWithAuth('/welfare?status=Pending');
         document.getElementById('treas-welfare-queue').innerHTML = welfare.map(w => `<div class="p-2 bg-emerald-900/20 rounded">${w.member}: KES ${w.amount}</div>`).join('');
@@ -407,7 +407,6 @@
     },
     submitFinancialReport: async () => {
       const text = document.getElementById('treas-report').value;
-      // Handle file similarly to handleDocUpload
       if (!text) return App.toast('Enter report', 'error');
       App.showSpinner('report-spinner');
       try {
