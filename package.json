@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "Insightful Eight Ltd Portal Frontend - PWA",
   "scripts": {
-    "start": "npx serve . -p 3000 --single",
-    "build": "html-minifier --collapse-whitespace --remove-comments --minify-css true index.html -o index.html && echo 'Minified index.html - Ready'",
-    "preview": "npm run build && npx serve ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "serve": "^14.2.1",
-    "html-minifier": "^4.0.0"
+    "vite": "^5.0.0",
+    "serve": "^14.2.1"
   }
 }
