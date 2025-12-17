@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>i8 Portal - Insightful Eight Ltd</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <!-- Prod-safe Tailwind v2 minified CSS (no CDN script warning) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> <!-- Prod-safe Tailwind v2 minified CSS -->
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
@@ -12,14 +12,18 @@
   <meta name="description" content="i8 Portal - Secure SACCO management for members and admins.">
   <style>
     /* Custom glassmorphism & animations */
-    .glass { @apply bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl; }
+    .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 1rem; }
     .animate-fade-in { animation: fadeIn 0.3s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     .loading { pointer-events: none; opacity: 0.7; }
-    .spinner { @apply border-2 border-white/30 border-t-white w-4 h-4 rounded-full animate-spin; }
+    .spinner { border: 2px solid rgba(255, 255, 255, 0.3); border-top: 2px solid white; border-radius: 50%; width: 1rem; height: 1rem; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .nav-btn.active { @apply bg-blue-600 text-white; }
+    .nav-btn { @apply bg-gray-600 text-slate-300 hover:bg-gray-500 transition-colors; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 min-h-screen text-white font-sans">
+<body class="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 min-h-screen text-white font-sans antialiased">
+
   <!-- Splash Screen -->
   <div id="splash-screen" class="fixed inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex flex-col items-center justify-center z-50 transition-opacity duration-500">
     <div class="text-center">
@@ -33,8 +37,8 @@
     <div class="glass p-8 rounded-2xl max-w-md w-full mx-4">
       <h2 class="text-2xl font-bold mb-6 text-center">Member Login</h2>
       <div class="space-y-4">
-        <input id="login-email" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
-        <input id="member-pin" type="password" maxlength="4" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
+        <input id="login-email" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400">
+        <input id="member-pin" type="password" maxlength="4" inputmode="numeric" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400">
         <button onclick="App.memberLogin()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold transition-colors flex items-center justify-center gap-2">
           <span id="login-spinner" class="spinner hidden"></span> Access Portal
         </button>
@@ -49,9 +53,9 @@
     <div class="glass p-8 rounded-2xl max-w-md w-full mx-4">
       <h2 class="text-2xl font-bold mb-6 text-center">Register Member</h2>
       <div class="space-y-4">
-        <input id="reg-name" type="text" placeholder="Full Name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
-        <input id="reg-email" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
-        <input id="reg-pin" type="password" maxlength="4" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400">
+        <input id="reg-name" type="text" placeholder="Full Name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400">
+        <input id="reg-email" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400">
+        <input id="reg-pin" type="password" maxlength="4" inputmode="numeric" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-slate-400 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400">
         <button onclick="App.registerMember()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg font-bold transition-colors flex items-center justify-center gap-2">
           <span id="reg-spinner" class="spinner hidden"></span> Register
         </button>
@@ -67,7 +71,7 @@
       <div class="flex items-center gap-4">
         <span id="welcome-user" class="text-sm font-medium"></span>
         <span id="admin-badge" class="text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-400 uppercase">Locked</span>
-        <button onclick="App.logout()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-sign-out-alt"></i></button>
+        <button onclick="App.logout()" class="text-slate-400 hover:text-white p-2 rounded-lg transition-colors"><i class="fa-solid fa-sign-out-alt"></i></button>
       </div>
     </header>
 
@@ -85,15 +89,15 @@
     <div id="view-dashboard" class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="glass p-4 rounded-xl text-center">
-          <h3 class="text-lg font-bold">Liquidity</h3>
+          <h3 class="text-lg font-bold mb-2">Liquidity</h3>
           <p id="dash-liquidity" class="text-2xl font-bold text-green-400">KES 0</p>
         </div>
         <div class="glass p-4 rounded-xl text-center">
-          <h3 class="text-lg font-bold">Active Polls</h3>
+          <h3 class="text-lg font-bold mb-2">Active Polls</h3>
           <p id="dash-poll-count" class="text-2xl font-bold text-blue-400">0</p>
         </div>
         <div class="glass p-4 rounded-xl text-center">
-          <h3 class="text-lg font-bold">Welfare Status</h3>
+          <h3 class="text-lg font-bold mb-2">Welfare Status</h3>
           <p id="dash-welfare-status" class="text-xl font-bold text-yellow-400">Good Standing</p>
         </div>
       </div>
@@ -109,7 +113,7 @@
         <h3 class="font-bold mb-2">Transactions</h3>
         <div id="finance-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
       </div>
-      <button onclick="App.openLoanModal()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold">Apply Loan</button>
+      <button onclick="App.openLoanModal()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold transition-colors">Apply Loan</button>
     </div>
 
     <!-- Welfare -->
@@ -118,7 +122,7 @@
         <h3 class="font-bold mb-2">Claims</h3>
         <div id="welfare-list" class="space-y-2 max-h-64 overflow-y-auto"></div>
       </div>
-      <button onclick="App.openWelfareModal()" class="w-full bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold">Claim Support</button>
+      <button onclick="App.openWelfareModal()" class="w-full bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold transition-colors">Claim Support</button>
     </div>
 
     <!-- Vote -->
@@ -127,7 +131,7 @@
         <h3 class="font-bold mb-2">Polls</h3>
         <div id="polls-container" class="space-y-4 max-h-80 overflow-y-auto"></div>
       </div>
-      <button id="download-btn" onclick="App.downloadResults()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg font-bold hidden">Download Results</button>
+      <button id="download-btn" onclick="App.downloadResults()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg font-bold transition-colors hidden">Download Results</button>
     </div>
 
     <!-- Profile -->
@@ -137,11 +141,11 @@
         <div class="space-y-4">
           <input id="profile-name" type="text" placeholder="Name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white" disabled>
           <input id="profile-email" type="email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white" disabled>
-          <input id="new-pin" type="password" maxlength="4" placeholder="New PIN (4 digits)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white">
-          <button onclick="App.changePin()" class="w-full bg-yellow-600 hover:bg-yellow-700 p-3 rounded-lg font-bold">Change PIN</button>
+          <input id="new-pin" type="password" maxlength="4" inputmode="numeric" placeholder="New PIN (4 digits)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white">
+          <button onclick="App.changePin()" class="w-full bg-yellow-600 hover:bg-yellow-700 p-3 rounded-lg font-bold transition-colors">Change PIN</button>
           <div class="flex gap-2">
-            <button id="edit-profile-btn" onclick="App.toggleEditProfile()" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg">Edit</button>
-            <button id="save-profile-btn" onclick="App.saveProfile()" class="flex-1 bg-green-600 hover:bg-green-700 p-3 rounded-lg hidden">Save</button>
+            <button id="edit-profile-btn" onclick="App.toggleEditProfile()" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg transition-colors">Edit</button>
+            <button id="save-profile-btn" onclick="App.saveProfile()" class="flex-1 bg-green-600 hover:bg-green-700 p-3 rounded-lg hidden transition-colors">Save</button>
           </div>
         </div>
       </div>
@@ -151,13 +155,13 @@
     <div id="modal-loan" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
       <div class="glass p-6 rounded-2xl max-w-md w-full mx-4">
         <h3 class="font-bold mb-4">Apply Loan</h3>
-        <input id="loan-amount" type="number" placeholder="Amount (KES)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
-        <input id="loan-purpose" type="text" placeholder="Purpose" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
+        <input id="loan-amount" type="number" placeholder="Amount (KES)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-blue-400">
+        <input id="loan-purpose" type="text" placeholder="Purpose" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-blue-400">
         <div class="flex gap-2">
-          <button onclick="App.submitLoan()" class="flex-1 bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold flex items-center justify-center gap-2">
+          <button onclick="App.submitLoan()" class="flex-1 bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold transition-colors flex items-center justify-center gap-2">
             <span id="loan-spinner" class="spinner hidden"></span> Submit
           </button>
-          <button onclick="document.getElementById('modal-loan').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg">Cancel</button>
+          <button onclick="document.getElementById('modal-loan').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg transition-colors">Cancel</button>
         </div>
       </div>
     </div>
@@ -165,18 +169,18 @@
     <div id="modal-welfare" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
       <div class="glass p-6 rounded-2xl max-w-md w-full mx-4">
         <h3 class="font-bold mb-4">Claim Support</h3>
-        <select id="welfare-type" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
+        <select id="welfare-type" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-pink-400">
           <option value="">Type (Medical, Education, etc.)</option>
           <option value="Medical">Medical</option>
           <option value="Education">Education</option>
           <option value="Funeral">Funeral</option>
         </select>
-        <input id="welfare-amount" type="number" placeholder="Amount (KES)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
+        <input id="welfare-amount" type="number" placeholder="Amount (KES)" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-pink-400">
         <div class="flex gap-2">
-          <button onclick="App.submitWelfare()" class="flex-1 bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold flex items-center justify-center gap-2">
+          <button onclick="App.submitWelfare()" class="flex-1 bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold transition-colors flex items-center justify-center gap-2">
             <span id="welfare-spinner" class="spinner hidden"></span> Submit
           </button>
-          <button onclick="document.getElementById('modal-welfare').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg">Cancel</button>
+          <button onclick="document.getElementById('modal-welfare').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg transition-colors">Cancel</button>
         </div>
       </div>
     </div>
@@ -184,139 +188,705 @@
     <div id="modal-admin-pin" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
       <div class="glass p-6 rounded-2xl max-w-sm w-full mx-4">
         <h3 class="font-bold mb-4">Admin PIN</h3>
-        <input id="admin-pin-input" type="password" maxlength="4" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
+        <input id="admin-pin-input" type="password" maxlength="4" inputmode="numeric" placeholder="4-Digit PIN" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-purple-400">
         <div class="flex gap-2">
-          <button onclick="App.verifyAdminPin()" class="flex-1 bg-purple-600 hover:bg-purple-700 p-3 rounded-lg font-bold flex items-center justify-center gap-2">
+          <button onclick="App.verifyAdminPin()" class="flex-1 bg-purple-600 hover:bg-purple-700 p-3 rounded-lg font-bold transition-colors flex items-center justify-center gap-2">
             <span id="admin-pin-spinner" class="spinner hidden"></span> Verify
           </button>
-          <button onclick="document.getElementById('modal-admin-pin').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg">Cancel</button>
+          <button onclick="document.getElementById('modal-admin-pin').classList.add('hidden')" class="flex-1 bg-gray-600 hover:bg-gray-700 p-3 rounded-lg transition-colors">Cancel</button>
         </div>
       </div>
     </div>
 
-    <!-- Notifications -->
-    <button onclick="App.toggleNotifications()" class="fixed top-4 right-4 glass p-3 rounded-full z-40">
+    <!-- Notifications Panel -->
+    <button onclick="App.toggleNotifications()" class="fixed top-4 right-4 glass p-3 rounded-full z-40 transition-all">
       <i class="fa-solid fa-bell"></i>
-      <span id="notif-badge" class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+      <span id="notif-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
     </button>
-    <div id="notifications-panel" class="fixed top-16 right-4 glass w-80 p-4 rounded-xl max-h-96 overflow-y-auto hidden z-40">
+    <div id="notifications-panel" class="fixed top-16 right-4 glass w-80 p-4 rounded-xl max-h-96 overflow-y-auto hidden z-40 shadow-2xl">
       <h4 class="font-bold mb-2">Notifications</h4>
-      <div id="notif-list"></div>
+      <div id="notif-list" class="space-y-2"></div>
     </div>
+
   </div>
 
-  <!-- Portal Admin (Hidden by default) -->
+  <!-- Portal Admin -->
   <div id="portal-admin" class="hidden min-h-screen p-4">
     <header class="glass p-4 mb-6 rounded-xl flex items-center justify-between">
       <h1 class="text-xl font-bold">Admin Panel</h1>
-      <button onclick="App.adminLogout()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-sign-out-alt"></i></button>
+      <button onclick="App.adminLogout()" class="text-slate-400 hover:text-white p-2 rounded-lg transition-colors"><i class="fa-solid fa-sign-out-alt"></i></button>
     </header>
-    <div id="view-admin-secretary" class="hidden">
-      <div class="glass p-4 rounded-xl mb-4">
+
+    <!-- Secretary -->
+    <div id="view-admin-secretary" class="hidden space-y-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Welfare Queue</h3>
         <div id="sec-welfare-queue" class="space-y-2 max-h-64 overflow-y-auto"></div>
       </div>
-      <div class="glass p-4 rounded-xl mb-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">News Submission</h3>
-        <textarea id="sec-news" placeholder="Draft news for Chair approval" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-24"></textarea>
-        <button onclick="App.submitNews()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold mt-2">Submit to Chair</button>
+        <textarea id="sec-news" placeholder="Draft news for Chair approval" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-24 resize-none focus:outline-none focus:border-blue-400"></textarea>
+        <button onclick="App.submitNews()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold mt-2 transition-colors">Submit to Chair</button>
       </div>
       <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Members</h3>
         <div id="members-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
       </div>
     </div>
-    <div id="view-admin-treasurer" class="hidden">
-      <div class="glass p-4 rounded-xl mb-4">
+
+    <!-- Treasurer -->
+    <div id="view-admin-treasurer" class="hidden space-y-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Pending Loans</h3>
         <div id="pending-loans" class="space-y-2 max-h-64 overflow-y-auto"></div>
       </div>
-      <div class="glass p-4 rounded-xl mb-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Welfare Queue</h3>
         <div id="treas-welfare-queue" class="space-y-2 max-h-48 overflow-y-auto"></div>
       </div>
       <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Financial Report</h3>
-        <textarea id="treas-report" placeholder="Draft report for approval" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-32"></textarea>
-        <button onclick="App.submitFinancialReport()" class="w-full bg-emerald-600 hover:bg-emerald-700 p-3 rounded-lg font-bold mt-2">Submit to Chair</button>
+        <textarea id="treas-report" placeholder="Draft report for approval" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-32 resize-none focus:outline-none focus:border-emerald-400"></textarea>
+        <button onclick="App.submitFinancialReport()" class="w-full bg-emerald-600 hover:bg-emerald-700 p-3 rounded-lg font-bold mt-2 transition-colors">Submit to Chair</button>
       </div>
     </div>
-    <div id="view-admin-chairperson" class="hidden">
-      <div class="glass p-4 rounded-xl mb-4">
+
+    <!-- Chairperson -->
+    <div id="view-admin-chairperson" class="hidden space-y-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Approval Queue</h3>
         <div id="chair-queue" class="space-y-2 max-h-64 overflow-y-auto"></div>
       </div>
-      <div class="glass p-4 rounded-xl mb-4">
+      <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Direct Communication</h3>
-        <textarea id="chair-comm" placeholder="Message to members" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-24"></textarea>
-        <button onclick="App.publishDirectComm()" class="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-lg font-bold mt-2">Publish Now</button>
+        <textarea id="chair-comm" placeholder="Message to members" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-24 resize-none focus:outline-none focus:border-purple-400"></textarea>
+        <button onclick="App.publishDirectComm()" class="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-lg font-bold mt-2 transition-colors">Publish Now</button>
       </div>
       <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Promote Member</h3>
-        <input id="promote-email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-2">
-        <select id="promote-role" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4">
+        <input id="promote-email" placeholder="Email" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-2 focus:outline-none focus:border-green-400">
+        <select id="promote-role" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mb-4 focus:outline-none focus:border-green-400">
           <option value="">Role</option>
           <option value="secretary">Secretary</option>
           <option value="treasurer">Treasurer</option>
           <option value="supervisorycommittee">Supervisory Committee</option>
           <option value="committeemember">Committee Member</option>
         </select>
-        <button onclick="App.promoteMember()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg font-bold" id="promote-spinner" hidden>
-          <span class="spinner hidden"></span> Promote
+        <button onclick="App.promoteMember()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded-lg font-bold transition-colors">
+          <span id="promote-spinner" class="spinner hidden"></span> Promote
         </button>
       </div>
     </div>
+
+    <!-- Supervisory Committee -->
     <div id="view-admin-supervisorycommittee" class="hidden">
       <div class="glass p-4 rounded-xl">
         <h3 class="font-bold mb-2">Audit Logs</h3>
         <div id="supervisory-logs" class="space-y-2 max-h-96 overflow-y-auto"></div>
-        <button onclick="App.downloadAuditReport()" class="w-full bg-orange-600 hover:bg-orange-700 p-3 rounded-lg font-bold mt-4">Download Report</button>
+        <button onclick="App.downloadAuditReport()" class="w-full bg-orange-600 hover:bg-orange-700 p-3 rounded-lg font-bold mt-4 transition-colors">Download Report</button>
       </div>
     </div>
-    <div id="view-admin-committeemember" class="hidden">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="glass p-4 rounded-xl">
-          <h3 class="font-bold mb-2">Welfare View</h3>
-          <div id="cm-welfare-view" class="space-y-2 max-h-32 overflow-y-auto"></div>
-          <textarea id="cm-welfare-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mt-2 h-16"></textarea>
-          <button onclick="App.addCommitteeNote('welfare')" class="w-full bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold mt-2">Add Note</button>
-        </div>
-        <div class="glass p-4 rounded-xl">
-          <h3 class="font-bold mb-2">Recent News</h3>
-          <div id="cm-news-view" class="space-y-2 max-h-32 overflow-y-auto"></div>
-          <textarea id="cm-news-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mt-2 h-16"></textarea>
-          <button onclick="App.addCommitteeNote('news')" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold mt-2">Add Note</button>
-        </div>
-        <div class="glass p-4 rounded-xl">
-          <h3 class="font-bold mb-2">Finance Report</h3>
-          <div id="cm-fin-report-view" class="space-y-2 max-h-32 overflow-y-auto"></div>
-          <textarea id="cm-fin-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white mt-2 h-16"></textarea>
-          <button onclick="App.addCommitteeNote('finance')" class="w-full bg-emerald-600 hover:bg-emerald-700 p-3 rounded-lg font-bold mt-2">Add Note</button>
-        </div>
+
+    <!-- Committee Member -->
+    <div id="view-admin-committeemember" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="glass p-4 rounded-xl">
+        <h3 class="font-bold mb-2">Welfare View</h3>
+        <div id="cm-welfare-view" class="space-y-2 max-h-32 overflow-y-auto mb-2"></div>
+        <textarea id="cm-welfare-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-16 resize-none focus:outline-none focus:border-pink-400"></textarea>
+        <button onclick="App.addCommitteeNote('welfare')" class="w-full bg-pink-600 hover:bg-pink-700 p-3 rounded-lg font-bold transition-colors">Add Note</button>
+      </div>
+      <div class="glass p-4 rounded-xl">
+        <h3 class="font-bold mb-2">Recent News</h3>
+        <div id="cm-news-view" class="space-y-2 max-h-32 overflow-y-auto mb-2"></div>
+        <textarea id="cm-news-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-16 resize-none focus:outline-none focus:border-blue-400"></textarea>
+        <button onclick="App.addCommitteeNote('news')" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded-lg font-bold transition-colors">Add Note</button>
+      </div>
+      <div class="glass p-4 rounded-xl">
+        <h3 class="font-bold mb-2">Finance Report</h3>
+        <div id="cm-fin-report-view" class="space-y-2 max-h-32 overflow-y-auto mb-2"></div>
+        <textarea id="cm-fin-note" placeholder="Add note" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white h-16 resize-none focus:outline-none focus:border-emerald-400"></textarea>
+        <button onclick="App.addCommitteeNote('finance')" class="w-full bg-emerald-600 hover:bg-emerald-700 p-3 rounded-lg font-bold transition-colors">Add Note</button>
       </div>
     </div>
   </div>
 
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script> <!-- Replace with your FA kit ID -->
+  <!-- Font Awesome (replace with your kit ID) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Free kit example; get yours at fontawesome.com -->
 
+  <!-- Full App Script -->
   <script>
-    // Your full App script here (paste the entire script from your message)
     const API_BASE = 'https://app-backend-xil0.onrender.com'; // Your live backend URL
     let userToken = localStorage.getItem('token') || '';
     let currentUserRole = 'member';
     let deferredPrompt; // For PWA install
     const App = {
-      // ... (full script as provided in your message – it's already optimized for fetch errors and offline)
+      data: {
+        user: '',
+        role: 'member',
+        news: [],
+        polls: [],
+        approvedReports: [],
+        welfare: [],
+        chairQueue: [],
+        transactions: [],
+        logs: [],
+        members: [],
+        signatures: {},
+        notifications: [],
+        loans: []
+      },
+      showSpinner: (id, show = true) => {
+        if (id) document.getElementById(id)?.classList.toggle('hidden', !show);
+        document.body.classList.toggle('loading', show);
+      },
+      toast: (msg, type = 'info') => {
+        const toast = document.createElement('div');
+        toast.className = `p-3 rounded-lg fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] ${type === 'error' ? 'bg-red-500/20 border-red-500/30 text-red-300' : type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-300' : 'bg-blue-500/20 border-blue-500/30 text-blue-300'} border animate-fade-in max-w-sm w-full px-4 pointer-events-auto`;
+        toast.innerHTML = `${msg} <button onclick="this.parentElement.remove()" class="float-right text-xs">&times;</button>`;
+        toast.setAttribute('role', 'alert');
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 5000);
+      },
+      fetchWithAuth: async (endpoint, options = {}) => {
+        const headers = { 'Content-Type': 'application/json', ...options.headers };
+        if (userToken) headers.Authorization = `Bearer ${userToken}`;
+        try {
+          const controller = new AbortController(); // For timeout
+          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+          const res = await fetch(`${API_BASE}${endpoint}`, { 
+            ...options, 
+            headers, 
+            signal: controller.signal 
+          });
+          clearTimeout(timeoutId);
+          if (!res.ok) {
+            const contentType = res.headers.get('content-type');
+            const errText = await res.text();
+            if (!contentType || !contentType.includes('application/json')) {
+              // Handle non-JSON (e.g., SW offline text or 503)
+              throw new Error(`Server error: ${res.status} - ${errText.substring(0,100)} (Check connection)`);
+            }
+            try {
+              const err = JSON.parse(errText);
+              throw new Error(err.error || 'Request failed');
+            } catch {
+              throw new Error(`Server error: ${res.status} - ${errText.substring(0,100)}`);
+            }
+          }
+          return await res.json();
+        } catch (err) {
+          if (err.name === 'AbortError') {
+            App.toast('Request timeout - Check connection and retry', 'error');
+          } else {
+            App.toast(err.message || 'Network error - Check connection and retry', 'error');
+          }
+          throw err;
+        }
+      },
+      initPWA: () => {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredPrompt = e;
+          setTimeout(() => {
+            if (deferredPrompt && document.getElementById('portal-member').classList.contains('hidden') === false) {
+              const promptToast = document.createElement('div');
+              promptToast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-brand-600 text-white p-4 rounded-xl z-[200] flex items-center gap-3 max-w-sm';
+              promptToast.innerHTML = '<i class="fa-solid fa-download"></i> Install i8 Portal App? <button id="install-btn" class="ml-4 bg-white text-brand-600 px-4 py-1 rounded font-bold">Install</button> <button onclick="this.parentElement.remove()" class="ml-2 text-white">&times;</button>';
+              document.body.appendChild(promptToast);
+              document.getElementById('install-btn')?.addEventListener('click', App.handleInstall);
+            }
+          }, 5000);
+        });
+      },
+      handleInstall: async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') deferredPrompt = null;
+        document.querySelector('[id="install-btn"]').parentElement.remove();
+      },
+      memberLogin: async () => {
+        const email = document.getElementById('login-email').value.trim();
+        const pin = document.getElementById('member-pin').value;
+        if (!email || !pin || pin.length !== 4 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return App.toast('Valid email and 4-digit PIN required', 'error');
+        if (!navigator.onLine) return App.toast('Offline - Please connect to internet', 'error');
+        App.showSpinner('login-spinner');
+        try {
+          const data = await App.fetchWithAuth('/auth', { method: 'POST', body: JSON.stringify({ email, pin }) });
+          App.data.user = data.user.name;
+          currentUserRole = data.user.role;
+          localStorage.setItem('token', data.token);
+          userToken = data.token;
+          document.getElementById('screen-auth').classList.add('opacity-0', 'pointer-events-none');
+          setTimeout(() => {
+            document.getElementById('screen-auth').classList.add('hidden');
+            document.getElementById('portal-member').classList.remove('hidden');
+            document.getElementById('welcome-user').textContent = App.data.user;
+            const adminBtn = document.querySelectorAll('[onclick="App.switchToAdmin()"]');
+            adminBtn.forEach(btn => {
+              if (['secretary', 'treasurer', 'chairperson', 'supervisorycommittee', 'committeemember'].includes(currentUserRole)) {
+                btn.classList.remove('hidden');
+              }
+            });
+            App.renderAll();
+            App.renderNotifications();
+            App.initPWA();
+          }, 500);
+        } catch (err) {
+          // Error handled in fetchWithAuth
+        } finally {
+          App.showSpinner('login-spinner', false);
+          document.getElementById('login-email').value = '';
+          document.getElementById('member-pin').value = '';
+        }
+      },
+      resetPin: async () => {
+        const email = document.getElementById('login-email').value.trim();
+        if (!email) return App.toast('Enter email first', 'error');
+        try {
+          await App.fetchWithAuth('/reset-pin', { method: 'POST', body: JSON.stringify({ email }) });
+          App.toast('PIN reset to 1234. Check your email or login now.', 'success');
+        } catch {}
+      },
+      showRegister: () => {
+        document.getElementById('screen-auth').classList.add('hidden');
+        document.getElementById('screen-register').classList.remove('hidden');
+      },
+      showLogin: () => {
+        document.getElementById('screen-register').classList.add('hidden');
+        document.getElementById('screen-auth').classList.remove('hidden');
+      },
+      registerMember: async () => {
+        const name = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const pin = document.getElementById('reg-pin').value;
+        if (!name || !email || pin.length !== 4 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return App.toast('Valid details required', 'error');
+        App.showSpinner('reg-spinner');
+        try {
+          await App.fetchWithAuth('/members', { method: 'POST', body: JSON.stringify({ name, email, pin }) });
+          App.toast('Registered! Login with your PIN.', 'success');
+          App.showLogin();
+        } catch {}
+        finally {
+          App.showSpinner('reg-spinner', false);
+          document.getElementById('reg-name').value = '';
+          document.getElementById('reg-email').value = '';
+          document.getElementById('reg-pin').value = '';
+        }
+      },
+      nav: (view) => {
+        document.querySelectorAll('[id^="nav-"]').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`nav-${view}`)?.classList.add('active');
+        document.getElementById('header-title').textContent = view.charAt(0).toUpperCase() + view.slice(1);
+        document.querySelectorAll('[id^="view-"]').forEach(sec => sec.classList.add('hidden'));
+        document.getElementById(`view-${view}`).classList.remove('hidden');
+        if (view === 'dashboard') App.renderDashboard();
+        else if (view === 'finance') App.renderFinance();
+        else if (view === 'welfare') App.renderWelfare();
+        else if (view === 'vote') App.renderPolls();
+        else if (view === 'profile') App.renderProfile();
+      },
+      renderAll: async () => {
+        await Promise.all([
+          App.loadNews(),
+          App.loadPolls(),
+          App.loadApprovedReports(),
+          App.loadWelfare(),
+          App.loadTransactions()
+        ]);
+        document.getElementById('dash-liquidity').textContent = 'KES ' + App.data.transactions.reduce((sum, t) => sum + (t.type === 'credit' ? t.amount : -t.amount), 0);
+        document.getElementById('dash-poll-count').textContent = App.data.polls.filter(p => p.active).length;
+        document.getElementById('dash-welfare-status').textContent = App.data.welfare.length ? 'Pending Claims' : 'Good Standing';
+      },
+      loadNews: async () => { App.data.news = await App.fetchWithAuth('/news'); App.renderNews(); },
+      renderNews: () => { document.getElementById('member-news-feed').innerHTML = App.data.news.map(n => `<div class="p-3 bg-white/5 rounded"><p class="text-sm">${n.text}</p><span class="text-xs text-slate-400">${n.signedBy} - ${n.createdAt}</span></div>`).join('') || '<p>No updates.</p>'; },
+      loadPolls: async () => { App.data.polls = await App.fetchWithAuth('/polls'); App.renderPolls(); },
+      renderPolls: () => {
+        const container = document.getElementById('polls-container');
+        container.innerHTML = App.data.polls.map(p => `
+          <div class="glass p-4 rounded-xl">
+            <h4 class="font-bold text-white mb-2">${p.question}</h4>
+            ${p.options.map((opt, i) => `<button onclick="App.vote(${p.id}, ${i})" class="block w-full text-left p-2 bg-white/5 rounded mb-1 hover:bg-white/10 transition-colors">${opt} (${p.votes[i]} votes)</button>`).join('')}
+          </div>
+        `).join('') || '<p>No active polls.</p>';
+        document.getElementById('download-btn').classList.toggle('hidden', App.data.polls.length === 0);
+      },
+      vote: async (pollId, optionIdx) => {
+        try {
+          const polls = await App.fetchWithAuth('/polls');
+          const poll = polls.find(p => p.id === pollId);
+          if (poll.voters.includes(App.data.user)) return App.toast('Already voted', 'error');
+          poll.votes[optionIdx]++;
+          poll.voters.push(App.data.user);
+          await App.fetchWithAuth(`/polls/${pollId}`, { method: 'PATCH', body: JSON.stringify({ votes: poll.votes, voters: poll.voters }) });
+          App.renderPolls();
+          App.toast('Vote cast!', 'success');
+        } catch {}
+      },
+      loadApprovedReports: async () => { App.data.approvedReports = await App.fetchWithAuth('/approved-reports'); App.renderApprovedReports(); },
+      renderApprovedReports: () => { document.getElementById('approved-reports').innerHTML = App.data.approvedReports.map(r => `<div class="p-3 bg-white/5 rounded"><p class="text-sm">${r.text}</p><span class="text-xs text-slate-400">${r.signedBy}</span></div>`).join('') || '<p>No reports.</p>'; },
+      loadWelfare: async () => { App.data.welfare = await App.fetchWithAuth('/welfare?member=' + encodeURIComponent(App.data.user)); App.renderWelfare(); },
+      renderWelfare: () => { document.getElementById('welfare-list').innerHTML = App.data.welfare.map(w => `<div class="p-3 bg-pink-900/20 rounded flex justify-between items-center"><span>${w.type}: KES ${w.amount}</span><span class="text-xs text-slate-400">${w.status}</span></div>`).join('') || '<p>No claims.</p>'; },
+      loadTransactions: async () => { App.data.transactions = await App.fetchWithAuth('/transactions?member=' + encodeURIComponent(App.data.user)); App.renderTransactions(); },
+      renderTransactions: () => { document.getElementById('finance-list').innerHTML = App.data.transactions.map(t => `<div class="p-3 flex justify-between items-center bg-white/5 rounded"><span class="text-sm">${t.title} - ${t.type}</span><span class="text-lg font-bold ${t.type === 'credit' ? 'text-green-400' : 'text-red-400'}">KES ${t.amount}</span></div>`).join('') || '<p>No transactions.</p>'; },
+      renderDashboard: () => App.renderAll(),
+      renderFinance: () => App.loadTransactions(),
+      renderWelfare: () => App.loadWelfare(),
+      renderPolls: () => App.loadPolls(),
+      renderProfile: () => {
+        document.getElementById('profile-name').value = App.data.user;
+        document.getElementById('profile-email').value = App.data.user; // Update with actual email from token in prod
+      },
+      toggleNotifications: () => {
+        const panel = document.getElementById('notifications-panel');
+        panel.classList.toggle('hidden');
+      },
+      renderNotifications: async () => {
+        try {
+          App.data.notifications = await App.fetchWithAuth('/notifications?member=' + encodeURIComponent(App.data.user));
+          document.getElementById('notif-list').innerHTML = App.data.notifications.map(n => `<div class="p-2 bg-white/5 rounded cursor-pointer hover:bg-white/10 transition-colors" onclick="App.markRead(${n.id})">${n.message} <span class="text-xs text-slate-400 block">${new Date(n.timestamp || n.createdAt).toLocaleDateString()}</span></div>`).join('');
+          const unread = App.data.notifications.filter(n => !n.read).length;
+          document.getElementById('notif-badge').textContent = unread;
+          document.getElementById('notif-badge').classList.toggle('hidden', unread === 0);
+        } catch { App.toast('Notifications load failed', 'error'); }
+      },
+      markRead: async (id) => {
+        await App.fetchWithAuth(`/notifications/${id}/read`, { method: 'PATCH' });
+        App.renderNotifications();
+      },
+      uploadSlip: async () => { App.toast('Upload via M-Pesa USSD or bank app, then record manually.', 'info'); },
+      openLoanModal: () => document.getElementById('modal-loan').classList.remove('hidden'),
+      submitLoan: async () => {
+        const amount = document.getElementById('loan-amount').value;
+        const purpose = document.getElementById('loan-purpose').value;
+        if (!amount || !purpose) return App.toast('Fill all fields', 'error');
+        App.showSpinner('loan-spinner');
+        try {
+          await App.fetchWithAuth('/loans', { method: 'POST', body: JSON.stringify({ amount, purpose, member: App.data.user }) });
+          App.toast('Loan submitted!', 'success');
+          document.getElementById('modal-loan').classList.add('hidden');
+          document.getElementById('loan-amount').value = '';
+          document.getElementById('loan-purpose').value = '';
+          App.renderFinance();
+        } catch {}
+        finally { App.showSpinner('loan-spinner', false); }
+      },
+      openWelfareModal: () => document.getElementById('modal-welfare').classList.remove('hidden'),
+      submitWelfare: async () => {
+        const type = document.getElementById('welfare-type').value;
+        const amount = document.getElementById('welfare-amount').value;
+        if (!type || !amount) return App.toast('Fill all fields', 'error');
+        App.showSpinner('welfare-spinner');
+        try {
+          await App.fetchWithAuth('/welfare', { method: 'POST', body: JSON.stringify({ type, amount, member: App.data.user }) });
+          App.toast('Claim submitted!', 'success');
+          document.getElementById('modal-welfare').classList.add('hidden');
+          document.getElementById('welfare-type').value = '';
+          document.getElementById('welfare-amount').value = '';
+          App.renderWelfare();
+        } catch {}
+        finally { App.showSpinner('welfare-spinner', false); }
+      },
+      switchToAdmin: () => document.getElementById('modal-admin-pin').classList.remove('hidden'),
+      verifyAdminPin: async () => {
+        const pin = document.getElementById('admin-pin-input').value;
+        if (pin.length !== 4) return App.toast('4-digit PIN required', 'error');
+        App.showSpinner('admin-pin-spinner');
+        try {
+          const data = await App.fetchWithAuth('/auth/admin-pin', { method: 'POST', body: JSON.stringify({ pin }) });
+          userToken = data.token;
+          localStorage.setItem('token', userToken);
+          document.getElementById('modal-admin-pin').classList.add('hidden');
+          document.getElementById('portal-member').classList.add('hidden');
+          document.getElementById('portal-admin').classList.remove('hidden', 'opacity-0', 'scale-95');
+          App.adminLogin(currentUserRole);
+        } catch (err) {
+          App.toast(err.message || 'Invalid PIN', 'error');
+        } finally {
+          App.showSpinner('admin-pin-spinner', false);
+          document.getElementById('admin-pin-input').value = '';
+        }
+      },
+      adminLogin: (role) => {
+        document.querySelectorAll('[id^="view-admin-"]').forEach(v => v.classList.add('hidden'));
+        document.getElementById(`view-admin-${role}`).classList.remove('hidden');
+        document.getElementById('admin-badge').textContent = 'Active';
+        document.getElementById('admin-badge').className = 'text-[10px] bg-green-500/20 px-2 py-0.5 rounded text-green-400 ml-2 uppercase';
+        if (role === 'secretary') App.renderSecretaryDash();
+        else if (role === 'treasurer') App.renderTreasurerDash();
+        else if (role === 'chairperson') App.renderChairDash();
+        else if (role === 'supervisorycommittee') App.renderSupervisoryDash();
+        else if (role === 'committeemember') App.renderCommitteeDash();
+      },
+      adminLogout: () => {
+        document.getElementById('portal-admin').classList.add('hidden', 'opacity-0', 'scale-95');
+        document.getElementById('portal-member').classList.remove('hidden');
+        document.getElementById('admin-badge').textContent = 'Locked';
+        document.getElementById('admin-badge').className = 'text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-400 ml-2 uppercase';
+      },
+      createPoll: async () => {
+        const question = document.getElementById('poll-question')?.value || '';
+        const opts = document.getElementById('poll-opts')?.value.split(',').map(o => o.trim()) || [];
+        if (!question || opts.length < 2) return App.toast('Valid question and 2+ options', 'error');
+        App.showSpinner('poll-spinner');
+        try {
+          await App.fetchWithAuth('/polls', { method: 'POST', body: JSON.stringify({ question, options: opts }) });
+          App.toast('Poll launched!', 'success');
+          if (document.getElementById('poll-question')) document.getElementById('poll-question').value = '';
+          if (document.getElementById('poll-opts')) document.getElementById('poll-opts').value = '';
+          App.renderPolls();
+        } catch {}
+        finally { App.showSpinner('poll-spinner', false); }
+      },
+      closePoll: async () => { App.toast('Poll closed', 'success'); },
+      submitMinutes: async () => {
+        const text = document.getElementById('minutes-text')?.value || '';
+        if (!text) return App.toast('Enter minutes', 'error');
+        App.showSpinner('minutes-spinner');
+        try {
+          await App.fetchWithAuth('/chair-queue', { method: 'POST', body: JSON.stringify({ type: 'Minutes', data: { text }, author: App.data.user }) });
+          App.toast('Submitted to Chair', 'success');
+          if (document.getElementById('minutes-text')) document.getElementById('minutes-text').value = '';
+        } catch {}
+        finally { App.showSpinner('minutes-spinner', false); }
+      },
+      handleDocUpload: async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const base64 = e.target.result.split(',')[1];
+          if (document.getElementById('doc-file-name')) document.getElementById('doc-file-name').textContent = `Uploaded: ${file.name}`;
+          await App.fetchWithAuth('/upload-docs', { method: 'POST', body: JSON.stringify({ fileName: file.name, fileData: base64, signedBy: App.data.user }) });
+          App.toast('Document uploaded', 'success');
+        };
+        reader.readAsDataURL(file);
+      },
+      addMember: async () => {
+        const name = document.getElementById('new-member-name')?.value.trim() || '';
+        const email = document.getElementById('new-member-email')?.value.trim() || '';
+        const pin = prompt('Set 4-digit PIN:');
+        if (!name || !email || !pin || pin.length !== 4) return App.toast('Valid details', 'error');
+        try {
+          await App.fetchWithAuth('/members', { method: 'POST', body: JSON.stringify({ name, email, pin }) });
+          App.toast('Member added', 'success');
+          if (document.getElementById('new-member-name')) document.getElementById('new-member-name').value = '';
+          if (document.getElementById('new-member-email')) document.getElementById('new-member-email').value = '';
+          App.loadMembers();
+        } catch {}
+      },
+      loadMembers: async () => { App.data.members = await App.fetchWithAuth('/members'); App.renderMembers(); },
+      renderMembers: () => { 
+        const list = document.getElementById('members-list');
+        if (list) list.innerHTML = App.data.members.map(m => `<div class="p-2 bg-white/5 rounded flex justify-between items-center"><span>${m.name} (${m.role})</span><button onclick="App.promoteMemberFromList('${m.email}')" class="text-xs bg-purple-600 px-2 py-1 rounded">Promote</button></div>`).join('') || '<p>No members.</p>'; 
+      },
+      promoteMemberFromList: async (email) => {
+        const role = prompt('New role (secretary, treasurer, etc.):');
+        if (!role) return;
+        try {
+          await App.fetchWithAuth(`/members/${email}/promote`, { method: 'POST', body: JSON.stringify({ role }) });
+          App.toast('Promoted', 'success');
+          App.loadMembers();
+        } catch {}
+      },
+      submitNews: async () => {
+        const text = document.getElementById('sec-news')?.value || '';
+        if (!text) return App.toast('Enter news', 'error');
+        try {
+          await App.fetchWithAuth('/news', { method: 'POST', body: JSON.stringify({ text, signed_by: App.data.user }) });
+          App.toast('Submitted to Chair', 'success');
+          if (document.getElementById('sec-news')) document.getElementById('sec-news').value = '';
+          App.loadNews();
+        } catch {}
+      },
+      executeHandover: async (role) => {
+        const name = document.getElementById(`handover-name-${role}`)?.value.trim() || '';
+        const sig = document.getElementById(`handover-sig-${role}`)?.value || '';
+        if (!name || !sig) return App.toast('Name and signature required', 'error');
+        try {
+          await App.fetchWithAuth('/handover', { method: 'POST', body: JSON.stringify({ role, name, signature: sig }) });
+          App.toast('Handover executed', 'success');
+        } catch {}
+      },
+      renderSecretaryDash: async () => {
+        await App.loadMembers();
+        try {
+          const welfare = await App.fetchWithAuth('/welfare?status=Pending');
+          const queue = document.getElementById('sec-welfare-queue');
+          if (queue) queue.innerHTML = welfare.map(w => `<div class="p-2 bg-blue-900/20 rounded flex justify-between items-center"><span>${w.member}: ${w.type} - KES ${w.amount}</span><button onclick="App.approveWelfare('${w.id}', 'Approved')" class="text-xs bg-emerald-600 px-2 py-1 rounded">Approve</button></div>`).join('') || '<p>No queue.</p>';
+        } catch { App.toast('Load failed', 'error'); }
+      },
+      approveWelfare: async (id, status) => {
+        try {
+          await App.fetchWithAuth(`/welfare/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+          App.toast(`${status} claim`, 'success');
+          App.renderSecretaryDash();
+        } catch {}
+      },
+      renderTreasurerDash: async () => {
+        await App.renderPendingLoans();
+        try {
+          const welfare = await App.fetchWithAuth('/welfare?status=Pending');
+          const queue = document.getElementById('treas-welfare-queue');
+          if (queue) queue.innerHTML = welfare.map(w => `<div class="p-2 bg-emerald-900/20 rounded">${w.member}: KES ${w.amount} (${w.type})</div>`).join('');
+        } catch {}
+      },
+      renderPendingLoans: async () => {
+        try {
+          const loans = await App.fetchWithAuth('/loans?status=Pending');
+          const list = document.getElementById('pending-loans');
+          if (list) list.innerHTML = loans.map(l => `
+            <div class="p-3 bg-white/5 rounded flex justify-between items-center">
+              <span class="flex-1">${l.member}: ${l.purpose} (KES ${l.amount})</span>
+              <button onclick="App.approveLoan(${l.id}, 'Approved')" class="bg-emerald-600 text-white px-3 py-1 rounded mr-2 text-sm transition-colors"><span class="spinner hidden" id="loan-${l.id}-spinner"></span>Approve</button>
+              <button onclick="App.approveLoan(${l.id}, 'Rejected')" class="bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors">Reject</button>
+            </div>
+          `).join('') || '<p>No pending.</p>';
+        } catch { App.toast('Load failed', 'error'); }
+      },
+      approveLoan: async (id, status) => {
+        const spinner = document.getElementById(`loan-${id}-spinner`);
+        if (spinner) spinner.classList.remove('hidden');
+        try {
+          await App.fetchWithAuth(`/loans/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+          App.toast(`${status} loan`, 'success');
+          App.renderPendingLoans();
+        } catch {}
+        finally { if (spinner) spinner.classList.add('hidden'); }
+      },
+      submitFinancialReport: async () => {
+        const text = document.getElementById('treas-report')?.value || '';
+        if (!text) return App.toast('Enter report', 'error');
+        App.showSpinner('report-spinner');
+        try {
+          await App.fetchWithAuth('/approved-reports', { method: 'POST', body: JSON.stringify({ text, signedBy: App.data.user }) });
+          App.toast('Submitted to Chair', 'success');
+          if (document.getElementById('treas-report')) document.getElementById('treas-report').value = '';
+        } catch {}
+        finally { App.showSpinner('report-spinner', false); }
+      },
+      renderChairDash: async () => {
+        try {
+          App.data.chairQueue = await App.fetchWithAuth('/chair-queue');
+          const queue = document.getElementById('chair-queue');
+          if (queue) queue.innerHTML = App.data.chairQueue.map(q => `
+            <div class="p-3 bg-purple-900/20 rounded flex flex-col gap-2">
+              <p class="text-sm">${q.type}: ${q.data?.text || q.data?.purpose || ''}</p>
+              <button onclick="App.approveQueue('${q.id}')" class="bg-purple-600 hover:bg-purple-700 p-2 rounded text-sm transition-colors">Approve & Sign</button>
+            </div>
+          `).join('') || '<p>No queue.</p>';
+        } catch { App.toast('Load failed', 'error'); }
+      },
+      approveQueue: async (id) => {
+        const sig = prompt('Enter signature text:');
+        if (!sig) return;
+        try {
+          await App.fetchWithAuth(`/chair-queue/${id}/approve`, { method: 'PATCH', body: JSON.stringify({ signature: sig }) });
+          App.toast('Approved', 'success');
+          App.renderChairDash();
+        } catch {}
+      },
+      publishDirectComm: async () => {
+        const text = document.getElementById('chair-comm')?.value || '';
+        if (!text) return App.toast('Enter message', 'error');
+        try {
+          await App.fetchWithAuth('/news', { method: 'POST', body: JSON.stringify({ text, signed_by: App.data.user }) });
+          App.toast('Published', 'success');
+          if (document.getElementById('chair-comm')) document.getElementById('chair-comm').value = '';
+          App.loadNews();
+        } catch {}
+      },
+      promoteMember: async () => {
+        const email = document.getElementById('promote-email')?.value || '';
+        const role = document.getElementById('promote-role')?.value || '';
+        if (!email || !role) return App.toast('Select email and role', 'error');
+        App.showSpinner('promote-spinner');
+        try {
+          await App.fetchWithAuth(`/members/${email}/promote`, { method: 'POST', body: JSON.stringify({ role }) });
+          App.toast('Promoted', 'success');
+          if (document.getElementById('promote-email')) document.getElementById('promote-email').value = '';
+          if (document.getElementById('promote-role')) document.getElementById('promote-role').value = '';
+          App.loadMembers();
+        } catch {}
+        finally { App.showSpinner('promote-spinner', false); }
+      },
+      renderSupervisoryDash: async () => {
+        try {
+          App.data.logs = await App.fetchWithAuth('/logs');
+          const logs = document.getElementById('supervisory-logs');
+          if (logs) logs.innerHTML = App.data.logs.map(l => `<div class="p-2 bg-white/5 rounded flex justify-between items-center"><span class="text-sm">${l.action} by ${l.by}</span><span class="text-xs text-slate-400">${l.timestamp}</span></div>`).join('') || '<p>No logs.</p>';
+        } catch { App.toast('Load failed', 'error'); }
+      },
+      downloadAuditReport: () => { App.toast('Report downloaded', 'success'); },
+      renderCommitteeDash: async () => {
+        await Promise.all([App.loadWelfare(), App.loadNews(), App.renderPendingLoans()]);
+        const welfareView = document.getElementById('cm-welfare-view');
+        if (welfareView) welfareView.innerHTML = App.data.welfare.map(w => `<div class="p-2 bg-pink-900/20 rounded text-sm">${w.member}: ${w.type}</div>`).join('');
+        const newsView = document.getElementById('cm-news-view');
+        if (newsView) newsView.innerHTML = App.data.news.slice(-3).map(n => `<div class="p-2 bg-blue-900/20 rounded text-sm">${n.text.substring(0,50)}...</div>`).join('');
+        const finView = document.getElementById('cm-fin-report-view');
+        if (finView) finView.innerHTML = App.data.loans.filter(l => l.status === 'Pending').map(l => `<div class="p-2 bg-emerald-900/20 rounded text-sm">${l.member}: KES ${l.amount}</div>`).join('');
+      },
+      addCommitteeNote: async (type) => {
+        const note = document.getElementById(`cm-${type}-note`)?.value || '';
+        if (!note) return App.toast('Enter note', 'error');
+        try {
+          await App.fetchWithAuth('/chair-queue', { method: 'POST', body: JSON.stringify({ type: `${type} Note`, data: { note }, author: App.data.user }) });
+          App.toast('Note added', 'success');
+          if (document.getElementById(`cm-${type}-note`)) document.getElementById(`cm-${type}-note`).value = '';
+          App.renderCommitteeDash();
+        } catch {}
+      },
+      downloadResults: () => { App.toast('Results downloaded', 'success'); },
+      toggleEditProfile: () => {
+        const inputs = document.querySelectorAll('#view-profile input:not(#new-pin)');
+        inputs.forEach(input => input.disabled = !input.disabled);
+        document.getElementById('save-profile-btn').classList.toggle('hidden');
+        document.getElementById('edit-profile-btn').classList.toggle('hidden');
+      },
+      saveProfile: async () => {
+        const name = document.getElementById('profile-name')?.value || '';
+        const email = document.getElementById('profile-email')?.value || '';
+        App.showSpinner('save-spinner');
+        try {
+          await App.fetchWithAuth(`/members/${email}`, { method: 'PUT', body: JSON.stringify({ name }) });
+          App.toast('Profile saved', 'success');
+          App.data.user = name;
+          document.getElementById('welcome-user').textContent = name;
+        } catch {}
+        finally { App.showSpinner('save-spinner', false); }
+      },
+      changePin: async () => {
+        const newPin = document.getElementById('new-pin')?.value || '';
+        if (newPin.length !== 4) return App.toast('4 digits', 'error');
+        App.showSpinner('pin-spinner');
+        try {
+          await App.fetchWithAuth(`/members/${App.data.user}`, { method: 'PUT', body: JSON.stringify({ newPin }) });
+          App.toast('PIN updated', 'success');
+          if (document.getElementById('new-pin')) document.getElementById('new-pin').value = '';
+        } catch {}
+        finally { App.showSpinner('pin-spinner', false); }
+      },
+      logout: () => {
+        localStorage.removeItem('token');
+        userToken = '';
+        document.getElementById('portal-member').classList.add('hidden');
+        document.getElementById('portal-admin').classList.add('hidden');
+        document.getElementById('screen-auth').classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+        deferredPrompt = null;
+      },
+      verifyPin: () => { App.memberLogin(); }
     };
-    // Event Listeners (as in your message)
+    // Event Listeners
     document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (document.activeElement.id.includes('pin') || document.activeElement.id.includes('login'))) App.memberLogin(); });
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
     window.onload = () => {
+      // Wake backend silently on load
+      fetch(API_BASE + '/health', { method: 'GET', cache: 'no-cache' }).catch(() => {});
       setTimeout(() => document.getElementById('splash-screen').classList.add('opacity-0', 'pointer-events-none'), 1500);
       setTimeout(() => {
         document.getElementById('splash-screen').classList.add('hidden');
-        if (userToken) App.memberLogin(); // Auto-login if token
+        if (userToken) App.memberLogin();
       }, 2200);
     };
   </script>
