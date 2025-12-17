@@ -1,6 +1,7 @@
 {
   "name": "i8-frontend",
   "version": "1.0.0",
+  "type": "module",  // NEW: Enables ES modules, fixes warning
   "description": "Insightful Eight Ltd Portal Frontend - PWA",
   "scripts": {
     "dev": "vite",
@@ -10,6 +11,9 @@
   "devDependencies": {
     "vite": "^5.4.21",
     "terser": "^5.31.6",
+    "tailwindcss": "^3.4.0",  // NEW
+    "postcss": "^8.4.31",  // NEW
+    "autoprefixer": "^10.4.16",  // NEW
     "serve": "^14.2.1"
   }
 }
