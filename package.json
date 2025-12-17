@@ -4,8 +4,8 @@
   "description": "Insightful Eight Ltd Portal Frontend - PWA",
   "scripts": {
     "start": "npx serve . -p 3000 --single",
-    "build": "html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true --input-dir ./ --output-dir ./build && echo 'Built to /build'",
-    "preview": "npm run build && npx serve build"
+    "build": "html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true --file-ext html index.html -o index.min.html && mv index.min.html index.html && echo 'Minified index.html - Static ready'",
+    "preview": "npm run build && npx serve ."
   },
   "devDependencies": {
     "serve": "^14.2.1",
