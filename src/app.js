@@ -1,39 +1,32 @@
-// Full App object and methods from your script, unchanged except for init
+// Your entire const API_BASE = ... ; document.addEventListener('DOMContentLoaded', ...) block – exact copy from <script> in source index.html
 const API_BASE = 'https://app-backend-xil0.onrender.com';
 let userToken = localStorage.getItem('token') || '';
 let currentUserRole = 'member';
 let deferredPrompt;
 const App = {
-  // ... (your entire App object, data, showSpinner, toast, fetchWithAuth, all methods like memberLogin, nav, renderAll, etc. – paste as-is from previous)
+  // ... (full App object, data, showSpinner, toast, fetchWithAuth, memberLogin, nav, renderAll, etc. – no changes needed)
 };
-
-// Event listeners and init (updated for module)
+// Event listeners and init (use DOMContentLoaded for safety)
 document.addEventListener('DOMContentLoaded', () => {
-  // Robust splash hide with explicit checks
-  const splash = document.getElementById('splash-screen');
-  if (splash) {
-    setTimeout(() => {
-      splash.classList.add('opacity-0', 'pointer-events-none');
-    }, 1500);
-    setTimeout(() => {
-      splash.classList.add('hidden');
-      if (userToken) {
-        App.memberLogin();  // Auto-login
-      }
-    }, 2200);
-  } else {
-    console.warn('Splash element missing – direct to auth');
+  try {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+      setTimeout(() => splash.classList.add('opacity-0', 'pointer-events-none'), 1500);
+      setTimeout(() => {
+        splash.classList.add('hidden');
+        if (userToken) App.memberLogin();
+      }, 2200);
+    }
+    // Keydown listener
+    document.addEventListener('keydown', (e) => {
+      const activeId = document.activeElement ? document.activeElement.id : '';
+      if (e.key === 'Enter' && (activeId.includes('pin') || activeId.includes('login'))) App.memberLogin();
+    });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(console.error);
+    App.initPWA();
+  } catch (err) {
+    console.error('App init error:', err);
+    const splash = document.getElementById('splash-screen');
+    if (splash) splash.classList.add('hidden');
   }
-
-  // Other listeners
-  document.addEventListener('keydown', (e) => {
-    const activeId = document.activeElement ? document.activeElement.id : '';
-    if (e.key === 'Enter' && (activeId.includes('pin') || activeId.includes('login'))) App.memberLogin();
-  });
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(console.error);
-  }
-
-  App.initPWA();
 });
