@@ -1,9 +1,8 @@
 <script>
-  const API_BASE = 'https://app-backend-xil0.onrender.com';  // Update to your Render URL after deploy
+  const API_BASE = 'https://app-backend-xil0.onrender.com'; // Your live backend URL
   let userToken = localStorage.getItem('token') || '';
   let currentUserRole = 'member';
-  let deferredPrompt;  // For PWA install
-
+  let deferredPrompt; // For PWA install
   const App = {
     data: {
       user: '',
@@ -29,7 +28,7 @@
       toast.className = `p-3 rounded-lg fixed top-6 left-1/2 transform -translate-x-1/2 z-[200] ${type === 'error' ? 'bg-red-500/20 border-red-500/30 text-red-300' : type === 'success' ? 'bg-green-500/20 border-green-500/30 text-green-300' : 'bg-blue-500/20 border-blue-500/30 text-blue-300'} border animate-fade-in max-w-sm w-full px-4 pointer-events-auto`;
       toast.innerHTML = `${msg} <button onclick="this.parentElement.remove()" class="float-right text-xs">&times;</button>`;
       toast.setAttribute('role', 'alert');
-      document.body.appendChild(toast);  // Append to body for better positioning
+      document.body.appendChild(toast); // Append to body for better positioning
       setTimeout(() => toast.remove(), 5000);
     },
     fetchWithAuth: async (endpoint, options = {}) => {
@@ -38,7 +37,12 @@
       try {
         const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
         if (!res.ok) {
+          const contentType = res.headers.get('content-type');
           const errText = await res.text();
+          if (!contentType || !contentType.includes('application/json')) {
+            // Handle non-JSON responses (e.g., SW offline fallback text)
+            throw new Error(`Server error: ${res.status} - ${errText.substring(0,100)} (Check connection)`);
+          }
           try {
             const err = JSON.parse(errText);
             throw new Error(err.error || 'Request failed');
@@ -48,7 +52,7 @@
         }
         return await res.json();
       } catch (err) {
-        App.toast(err.message || 'Network error', 'error');
+        App.toast(err.message || 'Network error - Check connection and retry', 'error');
         throw err;
       }
     },
@@ -100,7 +104,7 @@
           });
           App.renderAll();
           App.renderNotifications();
-          App.initPWA();  // Trigger install after login
+          App.initPWA(); // Trigger install after login
         }, 500);
       } catch (err) {
         // Error handled in fetchWithAuth
@@ -183,12 +187,12 @@
     },
     vote: async (pollId, optionIdx) => {
       try {
-        const polls = await App.fetchWithAuth('/polls');  // Refetch or patch endpoint
+        const polls = await App.fetchWithAuth('/polls'); // Refetch or patch endpoint
         const poll = polls.find(p => p.id === pollId);
         if (poll.voters.includes(App.data.user)) return App.toast('Already voted', 'error');
         poll.votes[optionIdx]++;
         poll.voters.push(App.data.user);
-        await App.fetchWithAuth(`/polls/${pollId}`, { method: 'PATCH', body: JSON.stringify({ votes: poll.votes, voters: poll.voters }) });  // Assume backend supports
+        await App.fetchWithAuth(`/polls/${pollId}`, { method: 'PATCH', body: JSON.stringify({ votes: poll.votes, voters: poll.voters }) }); // Assume backend supports
         App.renderPolls();
       } catch {}
     },
@@ -198,13 +202,13 @@
     renderWelfare: () => { document.getElementById('welfare-list').innerHTML = App.data.welfare.map(w => `<div class="p-3 bg-pink-900/20 rounded"> ${w.type}: KES ${w.amount} - ${w.status} </div>`).join('') || '<p>No claims.</p>'; },
     loadTransactions: async () => { App.data.transactions = await App.fetchWithAuth('/transactions'); App.renderTransactions(); },
     renderTransactions: () => { document.getElementById('finance-list').innerHTML = App.data.transactions.map(t => `<div class="p-3 flex justify-between"><span>${t.title} - ${t.type}</span><span>KES ${t.amount}</span></div>`).join('') || '<p>No transactions.</p>'; },
-    renderDashboard: () => App.renderAll(),  // Alias
+    renderDashboard: () => App.renderAll(), // Alias
     renderFinance: () => App.renderTransactions(),
     renderWelfare: () => { /* Already loaded */ },
     renderPolls: () => { /* Already loaded */ },
     renderProfile: () => {
       document.getElementById('profile-name').value = App.data.user;
-      document.getElementById('profile-email').value = App.data.user;  // Placeholder; fetch from token
+      document.getElementById('profile-email').value = App.data.user; // Placeholder; fetch from token
     },
     toggleNotifications: () => {
       const panel = document.getElementById('notifications-panel');
@@ -222,7 +226,7 @@
       await App.fetchWithAuth(`/notifications/${id}/read`, { method: 'PATCH' });
       App.renderNotifications();
     },
-    uploadSlip: async () => { App.toast('Upload via M-Pesa USSD or bank app, then record manually.', 'info'); },  // Placeholder; add file upload if needed
+    uploadSlip: async () => { App.toast('Upload via M-Pesa USSD or bank app, then record manually.', 'info'); }, // Placeholder; add file upload if needed
     openLoanModal: () => document.getElementById('modal-loan').classList.remove('hidden'),
     submitLoan: async () => {
       const amount = document.getElementById('loan-amount').value;
@@ -260,7 +264,7 @@
       if (pin.length !== 4) return App.toast('4-digit PIN required', 'error');
       App.showSpinner('admin-pin-spinner');
       try {
-        const data = await App.fetchWithAuth('/auth/admin-pin', { method: 'POST', body: JSON.stringify({ pin }) });  // Assume backend endpoint
+        const data = await App.fetchWithAuth('/auth/admin-pin', { method: 'POST', body: JSON.stringify({ pin }) }); // Assume backend endpoint
         userToken = data.token;
         localStorage.setItem('token', userToken);
         document.getElementById('modal-admin-pin').classList.add('hidden');
@@ -323,7 +327,7 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = async (e) => {
-        const base64 = e.target.result.split(',')[1];  // Remove data URL prefix
+        const base64 = e.target.result.split(',')[1]; // Remove data URL prefix
         document.getElementById('doc-file-name').textContent = `Uploaded: ${file.name}`;
         await App.fetchWithAuth('/upload-docs', { method: 'POST', body: JSON.stringify({ fileName: file.name, fileData: base64, signedBy: App.data.user }) });
         App.toast('Document uploaded', 'success');
@@ -333,7 +337,7 @@
     addMember: async () => {
       const name = document.getElementById('new-member-name').value.trim();
       const email = document.getElementById('new-member-email').value.trim();
-      const pin = prompt('Set 4-digit PIN:');  // Simple; use modal in prod
+      const pin = prompt('Set 4-digit PIN:'); // Simple; use modal in prod
       if (!name || !email || !pin || pin.length !== 4) return App.toast('Valid details', 'error');
       try {
         await App.fetchWithAuth('/members', { method: 'POST', body: JSON.stringify({ name, email, pin }) });
@@ -425,7 +429,7 @@
       } catch { App.toast('Load failed', 'error'); }
     },
     approveQueue: async (id) => {
-      const sig = prompt('Enter signature text:');  // Use select in prod
+      const sig = prompt('Enter signature text:'); // Use select in prod
       if (!sig) return;
       try {
         await App.fetchWithAuth(`/chair-queue/${id}/approve`, { method: 'PATCH', body: JSON.stringify({ signature: sig }) });
@@ -466,7 +470,7 @@
     downloadAuditReport: () => { /* Generate PDF or download logs */ App.toast('Report downloaded', 'success'); },
     renderCommitteeDash: async () => {
       // Load queues for notes
-      await Promise.all([App.loadWelfare(), App.loadNews(), App.renderPendingLoans()]);  // Reuse
+      await Promise.all([App.loadWelfare(), App.loadNews(), App.renderPendingLoans()]); // Reuse
       document.getElementById('cm-welfare-view').innerHTML = App.data.welfare.map(w => `<div>${w.member}: ${w.type}</div>`).join('');
       document.getElementById('cm-news-view').innerHTML = App.data.news.slice(-3).map(n => `<div>${n.text.substring(0,50)}...</div>`).join('');
       document.getElementById('cm-fin-report-view').innerHTML = App.data.loans.filter(l => l.status === 'Pending').map(l => `<div>${l.member}: KES ${l.amount}</div>`).join('');
@@ -505,7 +509,7 @@
       if (newPin.length !== 4) return App.toast('4 digits', 'error');
       App.showSpinner('pin-spinner');
       try {
-        await App.fetchWithAuth(`/members/${App.data.user}`, { method: 'PUT', body: JSON.stringify({ newPin }) });  // Use email from token
+        await App.fetchWithAuth(`/members/${App.data.user}`, { method: 'PUT', body: JSON.stringify({ newPin }) }); // Use email from token
         App.toast('PIN updated', 'success');
         document.getElementById('new-pin').value = '';
       } catch {}
@@ -517,11 +521,10 @@
       document.getElementById('portal-member').classList.add('hidden');
       document.getElementById('portal-admin').classList.add('hidden');
       document.getElementById('screen-auth').classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-      deferredPrompt = null;  // Reset install
+      deferredPrompt = null; // Reset install
     },
-    verifyPin: () => { /* For general PIN modals */ App.memberLogin(); }  // Reuse
+    verifyPin: () => { /* For general PIN modals */ App.memberLogin(); } // Reuse
   };
-
   // Event Listeners
   document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (document.activeElement.id.includes('pin') || document.activeElement.id.includes('login'))) App.memberLogin(); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -529,7 +532,7 @@
     setTimeout(() => document.getElementById('splash-screen').classList.add('opacity-0', 'pointer-events-none'), 1500);
     setTimeout(() => {
       document.getElementById('splash-screen').classList.add('hidden');
-      if (userToken) App.memberLogin();  // Auto-login if token
+      if (userToken) App.memberLogin(); // Auto-login if token
     }, 2200);
   };
 </script>
