@@ -1,19 +1,12 @@
 {
   "name": "i8-frontend",
   "version": "1.0.0",
-  "type": "module",
-  "description": "Insightful Eight Ltd Portal Frontend - PWA",
+  "description": "Insightful Eight Ltd Portal Frontend",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "npx serve . -p 3000",
+    "build": "echo 'Static site - no build needed'"
   },
   "devDependencies": {
-    "vite": "^5.4.21",
-    "terser": "^5.31.6",
-    "tailwindcss": "^3.4.0",
-    "postcss": "^8.4.31",
-    "autoprefixer": "^10.4.16",
     "serve": "^14.2.1"
   }
 }
