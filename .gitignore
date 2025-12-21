@@ -4,5 +4,4 @@ sheets-key.json
 .DS_Store
 build/
 dist/
-.vercel/
 .render/
