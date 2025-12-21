@@ -1,26 +1,22 @@
 {
   "name": "Insightful Eight Ltd Portal",
   "short_name": "i8 Portal",
-  "description": "Secure member portal for Insightful Eight Ltd - Loans, Welfare, Elections & More",
+  "description": "Member portal for Insightful Eight Ltd",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#6366f1",
   "orientation": "portrait-primary",
-  "categories": ["finance", "productivity", "social"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
